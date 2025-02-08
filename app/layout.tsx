@@ -2,8 +2,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ModeToggle } from "@/components/mode-toggle";
-import Logo from "@/components/logo";
+import Header from "@/components/header/header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,14 +36,9 @@ export default function RootLayout({
         disableTransitionOnChange
         >
           <div className="min-h-dvh flex flex-col">
-            <header className="w-full border-b p-1">
-              <div className="max-w-5xl flex justify-between items-center mx-auto">
-                <Logo />
-                <ModeToggle />
-              </div>
-            </header>
+            <Header />
+            {children}
           </div>
-        {children}
         </ThemeProvider>
       </body>
     </html>
