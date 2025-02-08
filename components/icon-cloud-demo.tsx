@@ -2,36 +2,21 @@ import { IconCloud } from "@/components/magicui/icon-cloud"
 import { cn } from "@/lib/utils"
 
 const slugs = [
-  "typescript",
-  "javascript",
-  "dart",
-  "java",
-  "react",
-  "flutter",
-  "android",
-  "html5",
-  "css3",
-  "nodedotjs",
-  "express",
-  "nextdotjs",
-  "prisma",
-  "amazonaws",
-  "postgresql",
-  "firebase",
-  "nginx",
-  "vercel",
-  "testinglibrary",
-  "jest",
-  "cypress",
-  "docker",
+  "googletasks",
+  "gmail",
+  "googlecalendar",
+  "syncthing",
+  "obsidian",
+  "anki",
+  "evernote",
   "git",
-  "jira",
   "github",
-  "gitlab",
-  "visualstudiocode",
-  "androidstudio",
-  "sonarqube",
-  "figma",
+  "googledrive",
+  "notion",
+  "todoist",
+  "slack",
+  "icloud",
+  "clockify"
 ]
 
 export default function IconCloudDemo({ className }: { className?: string }) {
@@ -40,15 +25,38 @@ export default function IconCloudDemo({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "relative flex size-full max-w-lg items-center justify-center overflow-hidden rounded-lg border bg-background",
+        "relative flex size-full max-w-lg items-center justify-center overflow-hidden rounded-lg bg-background",
         className,
       )}
     >
       <IconCloud images={images} className="opacity-80" />
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
-        <div className="w-4/5 h-0.5 bg-gradient-to-r from-transparent via-red-600 to-transparent rotate-45 transform shadow-sm" />
+
+      {/* Absolutely positioned container for the X lines */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden flex items-center justify-center">
+        {/* Wrap both lines in a container so they share the same transform center */}
+        <div className="relative w-[100%] h-[100%]">
+          {/* First diagonal line */}
+          <div
+            className="
+              absolute left-1/2 top-1/2 
+              w-[80%] h-0.5 
+              bg-gradient-to-r from-transparent via-red-600/80 to-transparent
+              transform origin-center rotate-45
+              -translate-x-1/2 -translate-y-1/2
+            "
+          />
+          {/* Second diagonal line */}
+          <div
+            className="
+              absolute left-1/2 top-1/2 
+              w-[80%] h-0.5 
+              bg-gradient-to-r from-transparent via-red-600/80 to-transparent
+              transform origin-center -rotate-45
+              -translate-x-1/2 -translate-y-1/2
+            "
+          />
+        </div>
       </div>
     </div>
   )
 }
-
