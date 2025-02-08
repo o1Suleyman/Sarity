@@ -10,7 +10,7 @@ export default async function Header() {
         <header className="w-full border-b p-1">
         <div className="max-w-5xl flex justify-between items-center mx-auto">
           <Link href="/"><Logo /></Link>
-          <div className="flex gap-4">
+          <div className="flex gap-4 items-center">
           <ModeToggle />
           <Suspense fallback={<Skeleton className="w-[101px]" />}>
           <AuthHeader />
