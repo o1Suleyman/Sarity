@@ -5,8 +5,8 @@ import dark from "../public/dark.svg";
 export default function Logo() {
     return (
         <>
-            <Image src={light} alt="Logo" className="dark:hidden"/>
-            <Image src={dark} alt="Logo" className="hidden dark:block"/>
+            <Image src={light} alt="Logo" className="dark:hidden" fetchPriority="high" />
+            <Image src={dark} alt="Logo" className="hidden dark:block" fetchPriority="high" />
         </>
     )
 }
