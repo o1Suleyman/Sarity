@@ -35,8 +35,14 @@ export default function RootLayout({
         enableSystem
         disableTransitionOnChange
         >
+          <div className="min-h-dvh flex flex-col">
+            <header className="w-full border-b p-1">
+              <div className="max-w-5xl flex justify-between items-center mx-auto">
+                <ModeToggle />
+              </div>
+            </header>
+          </div>
         {children}
-        <ModeToggle />
         </ThemeProvider>
       </body>
     </html>
