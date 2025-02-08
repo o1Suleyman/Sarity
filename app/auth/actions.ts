@@ -14,7 +14,7 @@ export async function auth(formData: FormData) {
     email: formData.get('email') as string,
   }
 
-  const { data, error } = await supabase.auth.signInWithOtp({
+  const { error } = await supabase.auth.signInWithOtp({
     email: email.email,
     options: {
       // set this to false if you do not want the user to be automatically signed up
