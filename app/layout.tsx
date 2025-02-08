@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ModeToggle } from "@/components/mode-toggle";
+import Logo from "@/components/logo";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,6 +39,7 @@ export default function RootLayout({
           <div className="min-h-dvh flex flex-col">
             <header className="w-full border-b p-1">
               <div className="max-w-5xl flex justify-between items-center mx-auto">
+                <Logo />
                 <ModeToggle />
               </div>
             </header>
