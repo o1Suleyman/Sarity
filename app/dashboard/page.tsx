@@ -1,3 +1,4 @@
+import ToDo from "@/components/todo"
 import {
     ResizableHandle,
     ResizablePanel,
@@ -13,7 +14,7 @@ import {
       >
         <ResizablePanel defaultSize={50}>
           <div className="flex h-[80vh] items-center justify-center p-6">
-            <span className="font-semibold">One</span>
+            <ToDo />
           </div>
         </ResizablePanel>
         <ResizableHandle />
