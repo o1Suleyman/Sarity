@@ -81,7 +81,7 @@ export function IconCloud({ icons, images, className }: IconCloudProps) {
         } else {
           // Handle SVG icons
           offCtx.scale(0.4, 0.4)
-          const svgString = renderToString(item as React.ReactElement)
+          const svgString = renderToString(item as React.ReactElement<any>)
           const img = new Image()
           img.src = "data:image/svg+xml;base64," + btoa(svgString)
           img.onload = () => {
