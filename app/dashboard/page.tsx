@@ -1,4 +1,4 @@
-import Events from "@/components/events"
+import Events from "@/app/dashboard/events"
 import {
     ResizableHandle,
     ResizablePanel,
