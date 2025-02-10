@@ -1,15 +1,15 @@
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { auth } from "@/app/auth/actions"
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { auth } from "@/app/auth/actions";
 
 export function LoginForm({
   className,
@@ -20,9 +20,7 @@ export function LoginForm({
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">Sign up or log in</CardTitle>
-          <CardDescription>
-            Simply enter your email
-          </CardDescription>
+          <CardDescription>Simply enter your email</CardDescription>
         </CardHeader>
         <CardContent>
           <form>
@@ -45,5 +43,5 @@ export function LoginForm({
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

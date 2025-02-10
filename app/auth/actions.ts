@@ -1,25 +1,25 @@
-'use server'
+"use server";
 
-import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
-import { createClient } from '@/utils/supabase/server'
+import { createClient } from "@/utils/supabase/server";
 
 export async function auth(formData: FormData) {
-  const supabase = await createClient()
+  const supabase = await createClient();
 
   const email = {
-    email: formData.get('email') as string,
-  }
+    email: formData.get("email") as string,
+  };
 
   const { error } = await supabase.auth.signInWithOtp({
     email: email.email,
     options: {
       shouldCreateUser: true,
-      emailRedirectTo: 'http://localhost:3000',
+      emailRedirectTo: "http://localhost:3000",
     },
-  })
+  });
 
-  revalidatePath('/', 'layout')
-  redirect('/welcome')
+  revalidatePath("/", "layout");
+  redirect("/welcome");
 }

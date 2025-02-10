@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/ui/skeleton"
+import { Skeleton } from "@/components/ui/skeleton";
 export default function Loading() {
   return (
     <div className="flex flex-col space-y-3 mt-5 mx-auto">
@@ -8,4 +8,5 @@ export default function Loading() {
         <Skeleton className="h-4 w-[200px]" />
       </div>
     </div>
-  )}
+  );
+}

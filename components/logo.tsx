@@ -3,10 +3,20 @@ import light from "../public/light.svg";
 import dark from "../public/dark.svg";
 
 export default function Logo() {
-    return (
-        <>
-            <Image src={light} alt="Logo" className="dark:hidden" fetchPriority="high" />
-            <Image src={dark} alt="Logo" className="hidden dark:block" fetchPriority="high" />
-        </>
-    )
+  return (
+    <>
+      <Image
+        src={light}
+        alt="Logo"
+        className="dark:hidden"
+        fetchPriority="high"
+      />
+      <Image
+        src={dark}
+        alt="Logo"
+        className="hidden dark:block"
+        fetchPriority="high"
+      />
+    </>
+  );
 }

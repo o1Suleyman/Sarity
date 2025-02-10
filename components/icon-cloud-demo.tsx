@@ -1,5 +1,5 @@
-import { IconCloud } from "@/components/ui/icon-cloud"
-import { cn } from "@/lib/utils"
+import { IconCloud } from "@/components/ui/icon-cloud";
+import { cn } from "@/lib/utils";
 
 const slugs = [
   "googletasks",
@@ -16,11 +16,13 @@ const slugs = [
   "todoist",
   "slack",
   "icloud",
-  "clockify"
-]
+  "clockify",
+];
 
 export default function IconCloudDemo({ className }: { className?: string }) {
-  const images = slugs.map((slug) => `https://cdn.simpleicons.org/${slug}/${slug}`)
+  const images = slugs.map(
+    (slug) => `https://cdn.simpleicons.org/${slug}/${slug}`,
+  );
 
   return (
     <div
@@ -58,5 +60,5 @@ export default function IconCloudDemo({ className }: { className?: string }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
