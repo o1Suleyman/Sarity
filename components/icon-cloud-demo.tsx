@@ -40,7 +40,7 @@ export default function IconCloudDemo({ className }: { className?: string }) {
             className="
               absolute left-1/2 top-1/2 
               w-[80%] h-0.5 
-              bg-gradient-to-r from-transparent via-red-600/80 to-transparent
+              bg-linear-to-r from-transparent via-red-600/80 to-transparent
               transform origin-center rotate-45
               -translate-x-1/2 -translate-y-1/2
             "
@@ -50,7 +50,7 @@ export default function IconCloudDemo({ className }: { className?: string }) {
             className="
               absolute left-1/2 top-1/2 
               w-[80%] h-0.5 
-              bg-gradient-to-r from-transparent via-red-600/80 to-transparent
+              bg-linear-to-r from-transparent via-red-600/80 to-transparent
               transform origin-center -rotate-45
               -translate-x-1/2 -translate-y-1/2
             "
