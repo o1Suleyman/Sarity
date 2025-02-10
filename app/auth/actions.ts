@@ -19,10 +19,7 @@ export async function auth(formData: FormData) {
       emailRedirectTo: 'http://localhost:3000',
     },
   })
-  if (error) {
-    redirect('/error')
-  }
 
   revalidatePath('/', 'layout')
-  redirect('/')
+  redirect('/welcome')
 }
