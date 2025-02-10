@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { InteractiveHoverButton } from "../magicui/interactive-hover-button";
+import { InteractiveHoverButton } from "../ui/interactive-hover-button";
 
 export default function InteractiveHoverLink({isLoggedIn}: {isLoggedIn: boolean}) {
     const router = useRouter();
