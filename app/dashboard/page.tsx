@@ -1,4 +1,4 @@
-import ToDo from "@/components/todo"
+import Events from "@/components/events"
 import {
     ResizableHandle,
     ResizablePanel,
@@ -14,7 +14,7 @@ import {
       >
         <ResizablePanel defaultSize={50}>
           <div className="flex h-[80vh] items-center justify-center p-6">
-            <ToDo />
+            <Events />
           </div>
         </ResizablePanel>
         <ResizableHandle />

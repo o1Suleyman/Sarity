@@ -1,11 +1,14 @@
-import { auth } from './actions'
+import { LoginForm } from '@/components/login-form'
 
 export default function LoginPage() {
   return (
-    <form>
-      <label htmlFor="email">Email:</label>
-      <input id="email" name="email" type="email" required />
-      <button formAction={auth}>Log in</button>
-    </form>
+    <div className="flex-1 flex justify-center">
+      <LoginForm className="mt-16" />
+    </div>
   )
 }
+// <form>
+// <label htmlFor="email">Email:</label>
+// <input id="email" name="email" type="email" required />
+// <button formAction={auth}>Log in</button>
+// </form>
