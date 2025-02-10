@@ -1,17 +1,21 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
+import { useOptimistic } from "react";
+import CreateEventDrawer from "./create-event-drawer";
 
 export default function EventsList({updateItemAction, initialEvents}: { updateItemAction: (formData: FormData) => void, initialEvents: any[] }) {
-    // const
+    const [optimisticTasks, setOptimisticTasks] = useOptimistic(initialEvents);
+    // const handleSubmit = () => {
+    //     f
+    // }
     return (
         <>
-        {initialEvents.map((event) => (
+        {optimisticTasks.map((event) => (
             <div key={event.id}>
                 <span>{event.name}</span>
             </div>
         ))}
-    <form action={updateItemAction}>
-        <Button type="submit">Create event</Button>
-    </form></>)
+        <CreateEventDrawer />
+        </>)
   }
