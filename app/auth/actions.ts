@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { permanentRedirect } from "next/navigation";
 
 import { createClient } from "@/utils/supabase/server";
 
@@ -20,5 +20,5 @@ export async function auth(formData: FormData) {
   });
 
   revalidatePath("/", "layout");
-  redirect(`https://${domain}`);
+  permanentRedirect(`https://${domain}`);
 }
