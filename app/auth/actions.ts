@@ -8,12 +8,10 @@ import { createClient } from "@/utils/supabase/server";
 export async function auth(formData: FormData) {
   const supabase = await createClient();
 
-  const email = {
-    email: formData.get("email") as string,
-  };
+  const email = formData.get("email") as string
 
   const { error } = await supabase.auth.signInWithOtp({
-    email: email.email,
+    email: email,
     options: {
       shouldCreateUser: true,
       emailRedirectTo: "http://localhost:3000",
