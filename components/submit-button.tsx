@@ -23,8 +23,8 @@ export default function SubmitButton({
   };
 
   return (
-    <Button {...props} type="submit" onClick={handleClick}>
-      {pending ? pendingText : "Get Started"}
+    <Button {...props} type="submit">
+      {pending ? pendingText : "Get Verification Link"}
     </Button>
   );
 }

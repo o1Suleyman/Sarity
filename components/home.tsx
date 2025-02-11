@@ -2,6 +2,7 @@ import IconCloudDemo from "./icon-cloud-demo";
 import { LoginForm } from "./login-form";
 import { SparklesText } from "./ui/sparkles-text";
 import { WordRotate } from "./ui/word-rotate";
+import styles from "./home.module.css"
 
 export default function Home() {
   const words = [
@@ -47,7 +48,7 @@ export default function Home() {
           <LoginForm className="w-max" />
         </div>
       </div>
-      <IconCloudDemo className="self-start" />
+      <IconCloudDemo className="self-start hidden md:flex" />
     </div>
   );
 }

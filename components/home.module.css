@@ -1,0 +1,13 @@
+.imgLarge {
+    display: none;
+  }
+  
+  @media (min-width: 768px) {
+    .imgSmall {
+      display: none;
+    }
+    .imgLarge {
+      display: unset;
+    }
+  }
+  
