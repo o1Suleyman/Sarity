@@ -29,6 +29,7 @@ export function LoginForm({
                 />
               </div>
               <SubmitButton
+                initialText="Get Verification Link"
                 pendingText="Redirecting to email.."
                 formAction={auth}
                 className="w-full"

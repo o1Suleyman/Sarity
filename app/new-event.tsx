@@ -4,13 +4,12 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { generateObject } from "ai";
-import { google } from '@ai-sdk/google';
+import { createGoogleGenerativeAI } from '@ai-sdk/google';
 
 import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -18,6 +17,10 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { createClient } from "@/utils/supabase/client";
+import { revalidatePath } from "next/cache";
+const google = createGoogleGenerativeAI({
+  apiKey: process.env.NEXT_PUBLIC_GOOGLE_GENERATIVE_AI_API_KEY,
+})
 const formSchema = z.object({
   query: z.string().min(2, {
     message: "Query must be at least 2 characters.",
@@ -31,7 +34,6 @@ export default function NewEvent() {
           query: "",
         },
       })
-     
       async function onSubmit(values: z.infer<typeof formSchema>) {
         const { object } = await generateObject({
             model: google("gemini-2.0-pro-exp-02-05"),
@@ -54,7 +56,7 @@ export default function NewEvent() {
             end_hour: object.event.endHour,
             end_minute: object.event.endMinute,
           })
-          console.log(object);
+          revalidatePath("/")
       }
   return (
     <Form {...form}>
@@ -72,7 +74,7 @@ export default function NewEvent() {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit">Create</Button>
       </form>
     </Form>
   )
