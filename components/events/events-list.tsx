@@ -10,6 +10,7 @@ export default async function EventsList() {
       {data?.map((event) => (
         <Event
           key={event.id}
+          id={event.id}
           name={event.name}
           startHour={event.start_hour}
           startMinute={event.start_minute}

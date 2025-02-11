@@ -16,7 +16,9 @@ export default function Dashboard() {
       >
         <ResizablePanel defaultSize={50}>
           <div className="h-[60vh] p-2">
-            <ScrollArea className="h-[60vh]"><EventsList /></ScrollArea>
+            <ScrollArea className="h-[60vh]">
+              <EventsList />
+            </ScrollArea>
           </div>
         </ResizablePanel>
         <ResizableHandle />

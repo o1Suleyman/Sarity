@@ -19,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
+import SubmitButton from "./create-event";
 
 const google = createGoogleGenerativeAI({
   apiKey: process.env.NEXT_PUBLIC_GOOGLE_GENERATIVE_AI_API_KEY,
@@ -153,10 +154,6 @@ export default function NewEvent() {
       return;
     }
 
-    toast({
-      title: "Event created successfully",
-    });
-
     router.refresh();
   }
 
@@ -173,13 +170,14 @@ export default function NewEvent() {
             <FormItem>
               <FormLabel>What task do you want to complete today?</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="CS IA from 7 p.m. to 8 p.m." />
+                <Input {...field} placeholder="CS IA from 7 p.m. to 8 p.m." autoFocus />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">Create</Button>
+        <SubmitButton initialText="Create" pendingText="Creating.."/>
+        {/* <Button type="submit">Create</Button> */}
       </form>
     </Form>
   );
