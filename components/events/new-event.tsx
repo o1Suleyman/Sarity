@@ -97,7 +97,7 @@ export default function NewEvent() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const { object } = await generateObject({
-      model: google("gemini-2.0-pro-exp-02-05"),
+      model: google("gemini-2.0-flash"),
       schema: z.object({
         event: z.object({
           task: z.string(),
@@ -107,9 +107,9 @@ export default function NewEvent() {
           endMinute: z.string(),
         }),
       }),
-      prompt: "Use military time, here's the event:" + values.query,
+      prompt: "Use military time, for example if it's 8am return 08 and if its 7pm return 19, here's the event:" + values.query,
     });
-
+    console.log(object.event)
     const supabase = await createClient();
     const { data } = await supabase.from("events").select("*");
 

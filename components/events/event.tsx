@@ -24,6 +24,29 @@ export default function Event({
   startMinute: string;
   endMinute: string;
 }) {
+  const formatTimeRange = (
+    startHour: string,
+    startMinute: string,
+    endHour: string,
+    endMinute: string
+  ) => {
+    const startHourNum = parseInt(startHour);
+    const endHourNum = parseInt(endHour);
+    const startPeriod = startHourNum >= 12 ? "PM" : "AM";
+    const endPeriod = endHourNum >= 12 ? "PM" : "AM";
+
+    const formatHour = (hour: number) => hour % 12 || 12;
+
+    const startTime = `${formatHour(startHourNum)}:${startMinute}`;
+    const endTime = `${formatHour(endHourNum)}:${endMinute}`;
+
+    if (startPeriod === endPeriod) {
+      return `${startTime} - ${endTime} ${startPeriod}`;
+    } else {
+      return `${startTime} ${startPeriod} - ${endTime} ${endPeriod}`;
+    }
+  };
+
   return (
     <Card className="w-full overflow-x-hidden">
       <CardHeader>
@@ -31,9 +54,9 @@ export default function Event({
       </CardHeader>
       <CardContent className="flex justify-between">
         <div>
-        {startHour}:{startMinute} - {endHour}:{endMinute}
+          {formatTimeRange(startHour, startMinute, endHour, endMinute)}
         </div>
-        <DeleteEvent id={id}/>
+        <DeleteEvent id={id} />
       </CardContent>
     </Card>
   );
