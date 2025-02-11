@@ -5,6 +5,7 @@ import "./globals.css";
 import Header from "@/components/header/header";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,6 +41,7 @@ export default function RootLayout({
           <div className="min-h-dvh flex flex-col">
             <Header />
             {children}
+            <Toaster />
             <Analytics />
             <SpeedInsights />
           </div>

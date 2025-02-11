@@ -10,6 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { auth } from "@/app/auth/actions";
+import SubmitButton from "./submit-button";
 
 export function LoginForm({
   className,
@@ -17,14 +18,10 @@ export function LoginForm({
 }: React.ComponentPropsWithoutRef<"div">) {
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">Sign up or log in</CardTitle>
-          <CardDescription>Simply enter your email</CardDescription>
-        </CardHeader>
-        <CardContent>
+      <Card className="border-0">
+        <CardContent className="pt-4">
           <form>
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-3">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
@@ -35,9 +32,10 @@ export function LoginForm({
                   required
                 />
               </div>
-              <Button type="submit" className="w-full" formAction={auth}>
-                Login
-              </Button>
+              <SubmitButton pendingText="Redirecting to email.." formAction={auth} className="w-full"/>
+              {/* <Button type="submit" className="w-full" formAction={auth}>
+                Get Started
+              </Button> */}
             </div>
           </form>
         </CardContent>
