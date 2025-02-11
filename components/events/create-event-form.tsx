@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
-import { toast } from "@/components/hooks/use-toast"
-import { Button } from "@/components/ui/button"
+import { toast } from "@/components/hooks/use-toast";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -14,14 +14,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 const FormSchema = z.object({
   name: z.string().min(2, {
     message: "Name must be at least 2 characters.",
   }),
-})
+});
 
 export default function CreateEventForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -29,7 +29,7 @@ export default function CreateEventForm() {
     defaultValues: {
       name: "",
     },
-  })
+  });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     toast({
@@ -39,7 +39,7 @@ export default function CreateEventForm() {
           <code className="text-white">{JSON.stringify(data, null, 2)}</code>
         </pre>
       ),
-    })
+    });
   }
 
   return (
@@ -61,5 +61,5 @@ export default function CreateEventForm() {
         <Button type="submit">Submit</Button>
       </form>
     </Form>
-  )
+  );
 }

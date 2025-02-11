@@ -5,7 +5,15 @@ import { SparklesText } from "./ui/sparkles-text";
 import { WordRotate } from "./ui/word-rotate";
 
 export default function Home() {
-  const words = ["Obsidian", "Notion", "Todoist", "Drive", "Evernote", "Forest", "Anki"];
+  const words = [
+    "Obsidian",
+    "Notion",
+    "Todoist",
+    "Drive",
+    "Evernote",
+    "Forest",
+    "Anki",
+  ];
   const longestWord = words.reduce((a, b) => (a.length > b.length ? a : b), "");
 
   return (

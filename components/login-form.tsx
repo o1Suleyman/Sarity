@@ -32,7 +32,11 @@ export function LoginForm({
                   required
                 />
               </div>
-              <SubmitButton pendingText="Redirecting to email.." formAction={auth} className="w-full"/>
+              <SubmitButton
+                pendingText="Redirecting to email.."
+                formAction={auth}
+                className="w-full"
+              />
               {/* <Button type="submit" className="w-full" formAction={auth}>
                 Get Started
               </Button> */}
