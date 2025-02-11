@@ -15,7 +15,7 @@ export async function auth(formData: FormData) {
     email: email,
     options: {
       shouldCreateUser: true,
-      emailRedirectTo: "http://localhost:3000",
+      emailRedirectTo: "https://sarity.vercel.app",
     },
   });
   await new Promise((resolve) => setTimeout(resolve, 2000));
