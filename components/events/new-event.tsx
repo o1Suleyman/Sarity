@@ -111,7 +111,8 @@ export default function NewEvent() {
 
     // Get today's date
     const today = new Date();
-    const date = today.toISOString().split("T")[0]; // Format: YYYY-MM-DD
+    const date = today.toLocaleDateString("en-CA"); // Format: YYYY-MM-DD
+    console.log(date)
 
     // Select only events from today
     const { data } = await supabase

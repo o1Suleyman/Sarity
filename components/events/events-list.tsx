@@ -5,7 +5,7 @@ export default async function EventsList() {
   const supabase = await createClient();
   
   // Get today's date in YYYY-MM-DD format
-  const today = new Date().toISOString().split('T')[0];
+const today = new Date().toLocaleDateString("en-CA"); // Format: YYYY-MM-DD
   
   // Query only events for today
   const { data, error } = await supabase
