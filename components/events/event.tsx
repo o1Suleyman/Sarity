@@ -1,3 +1,5 @@
+"use client"
+import { motion } from "framer-motion";
 import {
   Card,
   CardContent,
@@ -48,16 +50,22 @@ export default function Event({
   };
 
   return (
-    <Card className="w-full overflow-x-hidden">
-      <CardHeader>
-        <CardTitle>{name}</CardTitle>
-      </CardHeader>
-      <CardContent className="flex justify-between">
-        <div>
-          {formatTimeRange(startHour, startMinute, endHour, endMinute)}
-        </div>
-        <DeleteEvent id={id} />
-      </CardContent>
-    </Card>
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+    >
+      <Card className="w-full overflow-x-hidden">
+        <CardHeader>
+          <CardTitle>{name}</CardTitle>
+        </CardHeader>
+        <CardContent className="flex justify-between">
+          <div>
+            {formatTimeRange(startHour, startMinute, endHour, endMinute)}
+          </div>
+          <DeleteEvent id={id} />
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 }

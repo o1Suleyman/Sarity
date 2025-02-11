@@ -21,7 +21,7 @@ export default function Dashboard() {
       Today's events
     </h4>
                 <Separator />
-                <ScrollArea className="h-[60vh] mt-2">
+                <ScrollArea className="h-[50vh] mt-2">
               <EventsList />
             </ScrollArea>
           </div>

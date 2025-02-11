@@ -100,7 +100,7 @@ export default function NewEvent() {
       model: google("gemini-2.0-flash"),
       schema: z.object({
         event: z.object({
-          task: z.string(),
+          name: z.string(),
           startHour: z.string(),
           startMinute: z.string(),
           endHour: z.string(),
@@ -139,7 +139,7 @@ export default function NewEvent() {
     }
 
     const { error } = await supabase.from("events").insert({
-      name: object.event.task,
+      name: object.event.name,
       start_hour: object.event.startHour,
       start_minute: object.event.startMinute,
       end_hour: object.event.endHour,
@@ -169,7 +169,7 @@ export default function NewEvent() {
           name="query"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>What task do you want to complete today?</FormLabel>
+              <FormLabel>What do you want to complete today?</FormLabel>
               <FormControl>
                 <Input
                   {...field}
