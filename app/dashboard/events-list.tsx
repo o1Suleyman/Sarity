@@ -12,9 +12,6 @@ export default function EventsList({
   initialEvents: any[];
 }) {
   const [optimisticTasks, setOptimisticTasks] = useOptimistic(initialEvents);
-  // const handleSubmit = () => {
-  //     f
-  // }
   return (
     <>
       {optimisticTasks.map((event) => (
