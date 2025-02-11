@@ -9,6 +9,7 @@ export async function auth(formData: FormData) {
   const supabase = await createClient();
 
   const email = formData.get("email") as string
+  const domain = email.split("@")[1];
 
   const { error } = await supabase.auth.signInWithOtp({
     email: email,
@@ -19,5 +20,5 @@ export async function auth(formData: FormData) {
   });
 
   revalidatePath("/", "layout");
-  redirect("/welcome");
+  redirect(`https://${domain}`);
 }
