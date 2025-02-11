@@ -1,4 +1,4 @@
-import Dashboard from "@/components/events/dashboard";
+import Dashboard from "@/components/events/dashboard"
 import Home from "@/components/home";
 import { createClient } from "@/utils/supabase/server";
 
