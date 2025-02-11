@@ -1,9 +1,9 @@
 import Logo from "../logo";
 import { ModeToggle } from "../mode-toggle";
 import Link from "next/link";
-import AuthHeader from "./auth-header";
-import { Suspense } from "react";
-import { Skeleton } from "../ui/skeleton";
+// import AuthHeader from "./auth-header";
+// import { Suspense } from "react";
+// import { Skeleton } from "../ui/skeleton";
 
 export default async function Header() {
   return (
@@ -14,9 +14,9 @@ export default async function Header() {
         </Link>
         <div className="flex gap-4 items-center">
           <ModeToggle />
-          <Suspense fallback={<Skeleton className="w-[101px]" />}>
+          {/* <Suspense fallback={<Skeleton className="w-[101px]" />}>
             <AuthHeader />
-          </Suspense>
+          </Suspense> */}
         </div>
       </div>
     </header>
