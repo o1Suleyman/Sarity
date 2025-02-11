@@ -20,9 +20,7 @@ const slugs = [
 ];
 
 export default function IconCloudDemo({ className }: { className?: string }) {
-  const images = slugs.map(
-    (slug) => `/icons/${slug}.svg`,
-  );
+  const images = slugs.map((slug) => `/icons/${slug}.svg`);
 
   return (
     <div

@@ -1,14 +1,14 @@
 import {
-    ResizableHandle,
-    ResizablePanel,
-    ResizablePanelGroup,
-  } from "@/components/ui/resizable"
-import NewEvent from "@/components/events/new-event"
-import EventsList from "./events/events-list"
-  
-  export default function Dashboard() {
-    return (
-        <div className="flex-1 flex flex-col justify-center items-center gap-4">
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
+import NewEvent from "@/components/events/new-event";
+import EventsList from "./events/events-list";
+
+export default function Dashboard() {
+  return (
+    <div className="flex-1 flex flex-col justify-center items-center gap-4">
       <ResizablePanelGroup
         direction="horizontal"
         className="max-w-md rounded-lg border md:min-w-[70vw]"
@@ -36,7 +36,6 @@ import EventsList from "./events/events-list"
         </ResizablePanel>
       </ResizablePanelGroup>
       <NewEvent />
-      </div>
-    )
-  }
-  
+    </div>
+  );
+}

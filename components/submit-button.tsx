@@ -4,7 +4,7 @@ import { Button } from "./ui/button";
 import { ComponentPropsWithoutRef } from "react";
 
 type SubmitButtonProps = ComponentPropsWithoutRef<typeof Button> & {
-  initialText: string,
+  initialText: string;
   pendingText: string;
 };
 
@@ -16,7 +16,7 @@ export default function SubmitButton({
   const { pending } = useFormStatus();
   return (
     <Button {...props} type="submit">
-      {pending ? pendingText : initialText }
+      {pending ? pendingText : initialText}
     </Button>
   );
 }

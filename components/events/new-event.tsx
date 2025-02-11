@@ -5,8 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { generateObject } from "ai";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
-import { useToast } from "@/components/hooks/use-toast"
-
+import { useToast } from "@/components/hooks/use-toast";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -38,12 +37,13 @@ function isOverlapping(
     end_hour: string;
     end_minute: string;
   },
-  existingEvents: any[]
+  existingEvents: any[],
 ) {
   // Convert new event times to minutes for easier comparison
   const newStart =
     parseInt(newEvent.start_hour) * 60 + parseInt(newEvent.start_minute);
-  const newEnd = parseInt(newEvent.end_hour) * 60 + parseInt(newEvent.end_minute);
+  const newEnd =
+    parseInt(newEvent.end_hour) * 60 + parseInt(newEvent.end_minute);
 
   return existingEvents.some((event) => {
     // Convert existing event times to minutes
@@ -100,8 +100,9 @@ export default function NewEvent() {
     if (data && isOverlapping(newEvent, data)) {
       // Handle overlap case (e.g., show error message)
       toast({
-        title: "This event is overlapping an existing event! Choose a different time period."
-      })
+        title:
+          "This event is overlapping an existing event! Choose a different time period.",
+      });
       return;
     }
 

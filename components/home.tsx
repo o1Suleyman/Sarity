@@ -2,7 +2,7 @@ import IconCloudDemo from "./icon-cloud-demo";
 import { LoginForm } from "./login-form";
 import { SparklesText } from "./ui/sparkles-text";
 import { WordRotate } from "./ui/word-rotate";
-import styles from "./home.module.css"
+import styles from "./home.module.css";
 
 export default function Home() {
   const words = [
