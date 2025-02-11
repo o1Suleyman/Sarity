@@ -3,7 +3,7 @@ import {
     ResizablePanel,
     ResizablePanelGroup,
   } from "@/components/ui/resizable"
-import NewEvent from "./new-event"
+import NewEvent from "@/app/new-event"
   
   export default function Dashboard() {
     return (

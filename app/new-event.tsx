@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { generateObject } from "ai";
-import { createGoogleGenerativeAI } from '@ai-sdk/google';
+import { google } from '@ai-sdk/google';
 
 import { Button } from "@/components/ui/button"
 import {
@@ -18,9 +18,6 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { createClient } from "@/utils/supabase/client";
-const google = createGoogleGenerativeAI({
-    apiKey: "AIzaSyBxk_VjqA8f6tWyGzTPTHWrPRVC3bfzkLI",
-})
 const formSchema = z.object({
   query: z.string().min(2, {
     message: "Query must be at least 2 characters.",
