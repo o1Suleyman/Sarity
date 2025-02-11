@@ -17,7 +17,7 @@ export default function Home() {
 
   return (
     <div className="flex-1 flex justify-center items-start gap-4 mt-24">
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 ml-2">
         <div className="flex items-center">
           <span className="text-4xl font-bold text-black dark:text-white">
             No more juggling&nbsp;
