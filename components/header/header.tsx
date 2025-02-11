@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export default async function Header() {
   return (
-    <header className="w-full border-b p-1">
+    <header className="w-full border-b p-1 px-1.5">
       <div className="max-w-5xl flex justify-between items-center mx-auto">
         <Link href="/">
           <Logo />

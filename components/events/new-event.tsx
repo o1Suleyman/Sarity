@@ -30,6 +30,17 @@ const formSchema = z.object({
   }),
 });
 
+function isValidTimeOrder(
+  startHour: string,
+  startMinute: string,
+  endHour: string,
+  endMinute: string
+) {
+  const startTime = parseInt(startHour) * 60 + parseInt(startMinute);
+  const endTime = parseInt(endHour) * 60 + parseInt(endMinute);
+  return startTime < endTime;
+}
+
 function isOverlapping(
   newEvent: {
     start_hour: string;
@@ -37,13 +48,24 @@ function isOverlapping(
     end_hour: string;
     end_minute: string;
   },
-  existingEvents: any[],
+  existingEvents: any[]
 ) {
+  // First check if the time order is valid
+  if (
+    !isValidTimeOrder(
+      newEvent.start_hour,
+      newEvent.start_minute,
+      newEvent.end_hour,
+      newEvent.end_minute
+    )
+  ) {
+    return "invalid_time_order";
+  }
+
   // Convert new event times to minutes for easier comparison
   const newStart =
     parseInt(newEvent.start_hour) * 60 + parseInt(newEvent.start_minute);
-  const newEnd =
-    parseInt(newEvent.end_hour) * 60 + parseInt(newEvent.end_minute);
+  const newEnd = parseInt(newEvent.end_hour) * 60 + parseInt(newEvent.end_minute);
 
   return existingEvents.some((event) => {
     // Convert existing event times to minutes
@@ -97,8 +119,16 @@ export default function NewEvent() {
       end_minute: object.event.endMinute,
     };
 
-    if (data && isOverlapping(newEvent, data)) {
-      // Handle overlap case (e.g., show error message)
+    const overlapCheck = isOverlapping(newEvent, data || []);
+
+    if (overlapCheck === "invalid_time_order") {
+      toast({
+        title: "The start time must be before the end time.",
+      });
+      return;
+    }
+
+    if (data && overlapCheck === true) {
       toast({
         title:
           "This event is overlapping an existing event! Choose a different time period.",
@@ -113,6 +143,20 @@ export default function NewEvent() {
       end_hour: object.event.endHour,
       end_minute: object.event.endMinute,
     });
+
+    if (error) {
+      toast({
+        title: "Error creating event",
+        description: error.message,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    toast({
+      title: "Event created successfully",
+    });
+
     router.refresh();
   }
 

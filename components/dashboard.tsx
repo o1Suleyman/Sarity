@@ -5,6 +5,7 @@ import {
 } from "@/components/ui/resizable";
 import NewEvent from "@/components/events/new-event";
 import EventsList from "./events/events-list";
+import { ScrollArea } from "./ui/scroll-area";
 
 export default function Dashboard() {
   return (
@@ -15,7 +16,7 @@ export default function Dashboard() {
       >
         <ResizablePanel defaultSize={50}>
           <div className="h-[60vh] p-2">
-            <EventsList />
+            <ScrollArea className="h-[60vh]"><EventsList /></ScrollArea>
           </div>
         </ResizablePanel>
         <ResizableHandle />
