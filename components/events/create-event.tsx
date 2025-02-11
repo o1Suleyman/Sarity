@@ -1,22 +1,23 @@
 "use client";
-import { useFormStatus } from "react-dom";
-import { Button } from "@/components/ui/button"
+
+import { Button } from "@/components/ui/button";
 import { ComponentPropsWithoutRef } from "react";
 
 type SubmitButtonProps = ComponentPropsWithoutRef<typeof Button> & {
   initialText: string;
   pendingText: string;
+  isSubmitting: boolean;
 };
 
 export default function SubmitButton({
   initialText,
   pendingText,
+  isSubmitting,
   ...props
 }: SubmitButtonProps) {
-  const { pending } = useFormStatus();
   return (
-    <Button {...props} type="submit">
-      {pending ? pendingText : initialText}
+    <Button {...props} type="submit" disabled={isSubmitting}>
+      {isSubmitting ? pendingText : initialText}
     </Button>
   );
 }

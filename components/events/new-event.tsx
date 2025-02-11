@@ -7,7 +7,6 @@ import { generateObject } from "ai";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { useToast } from "@/components/hooks/use-toast";
 
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -94,6 +93,8 @@ export default function NewEvent() {
     },
   });
 
+  const { isSubmitting } = form.formState;
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const { object } = await generateObject({
       model: google("gemini-2.0-pro-exp-02-05"),
@@ -170,14 +171,21 @@ export default function NewEvent() {
             <FormItem>
               <FormLabel>What task do you want to complete today?</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="CS IA from 7 p.m. to 8 p.m." autoFocus />
+                <Input
+                  {...field}
+                  placeholder="CS IA from 7 p.m. to 8 p.m."
+                  autoFocus
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <SubmitButton initialText="Create" pendingText="Creating.."/>
-        {/* <Button type="submit">Create</Button> */}
+        <SubmitButton
+          initialText="Create"
+          pendingText="Creating..."
+          isSubmitting={isSubmitting}
+        />
       </form>
     </Form>
   );
