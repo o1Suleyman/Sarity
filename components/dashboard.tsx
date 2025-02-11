@@ -6,6 +6,7 @@ import {
 import NewEvent from "@/components/events/new-event";
 import EventsList from "./events/events-list";
 import { ScrollArea } from "./ui/scroll-area";
+import { Separator } from "./ui/separator";
 
 export default function Dashboard() {
   return (
@@ -16,7 +17,11 @@ export default function Dashboard() {
       >
         <ResizablePanel defaultSize={50}>
           <div className="h-[60vh] p-2">
-            <ScrollArea className="h-[60vh]">
+          <h4 className="scroll-m-20 text-xl font-semibold tracking-tight m-2">
+      Today's events
+    </h4>
+                <Separator />
+                <ScrollArea className="h-[60vh] mt-2">
               <EventsList />
             </ScrollArea>
           </div>
