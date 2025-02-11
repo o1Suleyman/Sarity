@@ -29,7 +29,7 @@ export default function Home() {
             <WordRotate
               className="text-4xl font-bold text-black dark:text-white"
               words={words}
-              duration={2500}
+              duration={2100}
             />
           </div>
         </div>
