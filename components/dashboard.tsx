@@ -3,10 +3,11 @@ import {
     ResizablePanel,
     ResizablePanelGroup,
   } from "@/components/ui/resizable"
+import NewEvent from "./new-event"
   
   export default function Dashboard() {
     return (
-        <div className="flex-1 flex justify-center items-center">
+        <div className="flex-1 flex flex-col justify-center items-center gap-4">
       <ResizablePanelGroup
         direction="horizontal"
         className="max-w-md rounded-lg border md:min-w-[70vw]"
@@ -33,6 +34,7 @@ import {
           </ResizablePanelGroup>
         </ResizablePanel>
       </ResizablePanelGroup>
+      <NewEvent />
       </div>
     )
   }
