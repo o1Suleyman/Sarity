@@ -3,7 +3,8 @@ import {
     ResizablePanel,
     ResizablePanelGroup,
   } from "@/components/ui/resizable"
-import NewEvent from "@/app/new-event"
+import NewEvent from "@/components/events/new-event"
+import EventsList from "./events/events-list"
   
   export default function Dashboard() {
     return (
@@ -14,7 +15,7 @@ import NewEvent from "@/app/new-event"
       >
         <ResizablePanel defaultSize={50}>
           <div className="flex h-[60vh] items-center justify-center p-6">
-            <span className="font-semibold">One</span>
+            <EventsList />
           </div>
         </ResizablePanel>
         <ResizableHandle />

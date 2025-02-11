@@ -12,32 +12,32 @@ export type Database = {
       events: {
         Row: {
           created_at: string
-          endHour: number | null
-          endMinute: number | null
+          end_hour: string
+          end_minute: string
           id: number
-          name: string | null
-          startHour: number | null
-          startMinute: number | null
+          name: string
+          start_hour: string
+          start_minute: string
           user_id: string | null
         }
         Insert: {
           created_at?: string
-          endHour?: number | null
-          endMinute?: number | null
+          end_hour: string
+          end_minute: string
           id?: number
-          name?: string | null
-          startHour?: number | null
-          startMinute?: number | null
+          name: string
+          start_hour: string
+          start_minute: string
           user_id?: string | null
         }
         Update: {
           created_at?: string
-          endHour?: number | null
-          endMinute?: number | null
+          end_hour?: string
+          end_minute?: string
           id?: number
-          name?: string | null
-          startHour?: number | null
-          startMinute?: number | null
+          name?: string
+          start_hour?: string
+          start_minute?: string
           user_id?: string | null
         }
         Relationships: [

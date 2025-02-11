@@ -18,6 +18,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { createClient } from "@/utils/supabase/client";
 import { revalidatePath } from "next/cache";
+import { useRouter } from "next/navigation";
 const google = createGoogleGenerativeAI({
   apiKey: process.env.NEXT_PUBLIC_GOOGLE_GENERATIVE_AI_API_KEY,
 })
@@ -28,6 +29,7 @@ const formSchema = z.object({
 })
 
 export default function NewEvent() {
+  const router = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -46,7 +48,7 @@ export default function NewEvent() {
                 endMinute: z.string(),
               }),
             }),
-            prompt: "Don't pad the hours and minutes, use military time, here's the event:" + values.query,
+            prompt: "Use military time, here's the event:" + values.query,
           });
           const supabase = await createClient();
           const {error} = await supabase.from("events").insert({
@@ -56,7 +58,7 @@ export default function NewEvent() {
             end_hour: object.event.endHour,
             end_minute: object.event.endMinute,
           })
-          revalidatePath("/")
+          router.refresh();
       }
   return (
     <Form {...form}>
