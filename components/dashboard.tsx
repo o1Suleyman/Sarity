@@ -14,7 +14,7 @@ import EventsList from "./events/events-list"
         className="max-w-md rounded-lg border md:min-w-[70vw]"
       >
         <ResizablePanel defaultSize={50}>
-          <div className="flex h-[60vh] items-center justify-center p-6">
+          <div className="h-[60vh] p-2">
             <EventsList />
           </div>
         </ResizablePanel>
@@ -23,13 +23,13 @@ import EventsList from "./events/events-list"
           <ResizablePanelGroup direction="vertical">
             <ResizablePanel defaultSize={50}>
               <div className="flex h-full items-center justify-center p-6">
-                <span className="font-semibold">Two</span>
+                <span className="font-semibold">Work in progress</span>
               </div>
             </ResizablePanel>
             <ResizableHandle />
             <ResizablePanel defaultSize={50}>
               <div className="flex h-full items-center justify-center p-6">
-                <span className="font-semibold">Three</span>
+                <span className="font-semibold">Work in progress</span>
               </div>
             </ResizablePanel>
           </ResizablePanelGroup>

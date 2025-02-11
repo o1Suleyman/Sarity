@@ -6,7 +6,7 @@ export default async function EventsList() {
     const { data, error } = await supabase.from("events").select("*");
     
     return (
-        <div className="events-list">
+        <div className="flex flex-col">
             {data?.map((event) => (
             <Event
                 key={event.id}
