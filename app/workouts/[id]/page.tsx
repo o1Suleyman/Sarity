@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Clock, Calendar } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -91,11 +90,7 @@ export default function Workout({
   if (!eventData) return null;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-    >
+    <div>
       <Card className="flex-1 mx-[20vw] my-[10vh]">
         <CardHeader>
           <Button
@@ -107,7 +102,6 @@ export default function Workout({
           </Button>
           <CardTitle className="text-3xl flex items-center gap-3">
             {eventData.name}
-            <Badge variant="secondary">{eventData.type}</Badge>
           </CardTitle>
           <CardDescription className="space-y-2 mt-4">
             <div className="flex items-center gap-2">
@@ -129,6 +123,6 @@ export default function Workout({
           <DeleteEvent id={eventData.id} redirect={true} />
         </CardFooter>
       </Card>
-    </motion.div>
+    </div>
   );
 }
