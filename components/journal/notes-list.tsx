@@ -8,7 +8,7 @@ export default async function NotesList() {
     .select("*")
     .order("created_at", { ascending: false });
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-1 w-full">
       {data?.map((note) => (
         <Note
           key={note.id}

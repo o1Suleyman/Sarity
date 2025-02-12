@@ -10,6 +10,7 @@ import { Separator } from "./ui/separator";
 import Workout from "./events/workout";
 import NotesList from "./journal/notes-list";
 import CreateNote from "./journal/create-note";
+import Link from "next/link";
 
 export default function Dashboard() {
   return (
@@ -49,9 +50,11 @@ export default function Dashboard() {
             <ResizableHandle />
             <ResizablePanel defaultSize={49}>
               <div className="flex flex-col h-full p-2">
-                <h4 className="scroll-m-20 text-xl font-semibold tracking-tight m-2">
-                  Journal
-                </h4>
+                <Link href="/journal">
+                  <h4 className="scroll-m-20 text-xl font-semibold tracking-tight m-2">
+                    Journal
+                  </h4>
+                </Link>
                 <Separator className="mb-1" />
                 <ScrollArea>
                   <NotesList />
