@@ -15,6 +15,14 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Clock, Calendar } from "lucide-react";
 import { useRouter } from "next/navigation";
 import DeleteEvent from "@/components/events/delete-event";
+import UpdateEventForm from "@/components/events/update-event-form";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { VisuallyHidden } from "@/components/ui/visually-hidden";
 
 interface EventData {
   id: number;
@@ -27,7 +35,7 @@ interface EventData {
   end_minute: string;
   date: string;
   type: string;
-  duration?: string; // Added duration field
+  duration?: string;
 }
 
 export default function Workout({
@@ -37,6 +45,7 @@ export default function Workout({
 }) {
   const router = useRouter();
   const [eventData, setEventData] = useState<EventData | null>(null);
+  const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
 
   useEffect(() => {
     const fetchEventData = async () => {
@@ -46,7 +55,7 @@ export default function Workout({
         .from("events")
         .select("*")
         .eq("id", Number(id))
-        .single();
+        .maybeSingle();
 
       if (data) {
         // Calculate duration
@@ -64,7 +73,7 @@ export default function Workout({
 
         // Conditionally format duration
         if (hours === 0 && minutes === 0) {
-          data.duration = "0m"; // Edge case: no duration
+          data.duration = "0m";
         } else if (hours === 0) {
           data.duration = `${minutes}m`;
         } else if (minutes === 0) {
@@ -112,6 +121,11 @@ export default function Workout({
     });
   };
 
+  const handleUpdateSuccess = () => {
+    setIsUpdateDialogOpen(false);
+    router.refresh();
+  };
+
   if (!eventData) return null;
 
   return (
@@ -148,6 +162,26 @@ export default function Workout({
           </CardDescription>
         </CardHeader>
         <CardFooter className="flex justify-end gap-2">
+        <Dialog
+  open={isUpdateDialogOpen}
+  onOpenChange={setIsUpdateDialogOpen}
+>
+  <DialogTrigger asChild>
+    <Button variant="outline">Edit</Button>
+  </DialogTrigger>
+  <DialogContent className="sm:max-w-[425px]">
+    <div className="flex flex-col gap-4">
+      <DialogTitle className="text-xl font-semibold">
+        Update event details
+      </DialogTitle>
+      <UpdateEventForm
+        eventId={eventData.id}
+        currentName={eventData.name}
+        onSuccess={handleUpdateSuccess}
+      />
+    </div>
+  </DialogContent>
+</Dialog>
           <DeleteEvent id={eventData.id} redirect={true} />
         </CardFooter>
       </Card>

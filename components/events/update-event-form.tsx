@@ -17,7 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
-import SubmitButton from "./create-event";
+import UpdateButton from "./update-event";
 
 const google = createGoogleGenerativeAI({
   apiKey: process.env.NEXT_PUBLIC_GOOGLE_GENERATIVE_AI_API_KEY,
@@ -33,7 +33,7 @@ function isValidTimeOrder(
   startHour: string,
   startMinute: string,
   endHour: string,
-  endMinute: string,
+  endMinute: string
 ) {
   const startTime = parseInt(startHour) * 60 + parseInt(startMinute);
   const endTime = parseInt(endHour) * 60 + parseInt(endMinute);
@@ -48,13 +48,14 @@ function isOverlapping(
     end_minute: string;
   },
   existingEvents: any[],
+  currentEventId: number
 ) {
   if (
     !isValidTimeOrder(
       newEvent.start_hour,
       newEvent.start_minute,
       newEvent.end_hour,
-      newEvent.end_minute,
+      newEvent.end_minute
     )
   ) {
     return "invalid_time_order";
@@ -62,10 +63,12 @@ function isOverlapping(
 
   const newStart =
     parseInt(newEvent.start_hour) * 60 + parseInt(newEvent.start_minute);
-  const newEnd =
-    parseInt(newEvent.end_hour) * 60 + parseInt(newEvent.end_minute);
+  const newEnd = parseInt(newEvent.end_hour) * 60 + parseInt(newEvent.end_minute);
 
   return existingEvents.some((event) => {
+    // Skip checking against the current event being updated
+    if (event.id === currentEventId) return false;
+
     const existingStart =
       parseInt(event.start_hour) * 60 + parseInt(event.start_minute);
     const existingEnd =
@@ -79,13 +82,23 @@ function isOverlapping(
   });
 }
 
-export default function NewEvent() {
+interface UpdateEventFormProps {
+  eventId: number;
+  currentName: string;
+  onSuccess?: () => void;
+}
+
+export default function UpdateEventForm({
+  eventId,
+  currentName,
+  onSuccess,
+}: UpdateEventFormProps) {
   const { toast } = useToast();
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      query: "",
+      query: currentName,
     },
   });
 
@@ -97,12 +110,10 @@ export default function NewEvent() {
         model: google("gemini-2.0-flash"),
         schema: z.object({
           event: z.object({
-            name: z.string(),
             startHour: z.string(),
             startMinute: z.string(),
             endHour: z.string(),
             endMinute: z.string(),
-            type: z.enum(["task", "workout"]),
           }),
         }),
         prompt:
@@ -110,36 +121,25 @@ export default function NewEvent() {
           values.query,
       });
 
-      const supabase = await createClient();
+      const supabase = createClient();
 
-      // Get today's date
-      const today = new Date();
-      const date = today.toLocaleDateString("en-CA"); // Format: YYYY-MM-DD
-      console.log(date);
+      // Get the event's date
+      const { data: currentEvent } = await supabase
+        .from("events")
+        .select("date")
+        .eq("id", eventId)
+        .single();
 
-      // If this is a workout, check if one already exists for today
-      if (object.event.type === "workout") {
-        const { data: existingWorkout } = await supabase
-          .from("events")
-          .select("*")
-          .eq("date", date)
-          .eq("type", "workout")
-          .maybeSingle();
-
-        if (existingWorkout) {
-          toast({
-            title:
-              "Working out more than once a day is against Sarity's philosophy",
-          });
-          return;
-        }
+      if (!currentEvent) {
+        throw new Error("Event not found");
       }
 
-      // Select only events from today
+
+      // Select events from the same date
       const { data } = await supabase
         .from("events")
         .select("*")
-        .eq("date", date);
+        .eq("date", currentEvent.date);
 
       // Check for overlapping events
       const newEvent = {
@@ -149,7 +149,7 @@ export default function NewEvent() {
         end_minute: object.event.endMinute,
       };
 
-      const overlapCheck = isOverlapping(newEvent, data || []);
+      const overlapCheck = isOverlapping(newEvent, data || [], eventId);
 
       if (overlapCheck === "invalid_time_order") {
         toast({
@@ -166,31 +166,38 @@ export default function NewEvent() {
         return;
       }
 
-      // Insert the new event with the date
-      const { error } = await supabase.from("events").insert({
-        name: object.event.name,
-        start_hour: object.event.startHour,
-        start_minute: object.event.startMinute,
-        end_hour: object.event.endHour,
-        end_minute: object.event.endMinute,
-        type: object.event.type,
-        date: date, // Store as YYYY-MM-DD
-      });
+      // Upsert the event
+      const { error } = await supabase
+        .from("events")
+        .upsert({
+          id: eventId, // Specify the ID for upsert
+          start_hour: object.event.startHour,
+          start_minute: object.event.startMinute,
+          end_hour: object.event.endHour,
+          end_minute: object.event.endMinute,
+        });
 
       if (error) {
         toast({
-          title: "Error creating event",
+          title: "Error updating event",
           description: error.message,
           variant: "destructive",
         });
         return;
       }
 
-      form.reset(); // Clear the form after successful submission
+      toast({
+        title: "Event updated successfully",
+      });
+
+      if (onSuccess) {
+        onSuccess();
+      }
+
       router.refresh();
     } catch (error) {
       toast({
-        title: "Error creating event",
+        title: "Error updating event",
         description:
           error instanceof Error ? error.message : "Unknown error occurred",
         variant: "destructive",
@@ -198,34 +205,29 @@ export default function NewEvent() {
     }
   }
 
+  // In update-event-form.tsx
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-2 md:min-w-[70vw]"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="query"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>What do you want to complete today?</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
-                  placeholder="Treadmill after school"
-                  autoFocus
-                />
+                <Input {...field} placeholder="Enter updated event details" />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <SubmitButton
-          initialText="Create"
-          pendingText="Creating..."
-          isSubmitting={isSubmitting}
-        />
+        <div className="flex justify-end">
+          <UpdateButton
+            initialText="Update"
+            pendingText="Updating..."
+            isSubmitting={isSubmitting}
+          />
+        </div>
       </form>
     </Form>
   );
