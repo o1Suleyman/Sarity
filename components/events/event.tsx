@@ -46,7 +46,7 @@ export default function Event({
     // Update every minute
     const interval = setInterval(() => {
       setIsOngoing(checkIfOngoing());
-    }, 60000);
+    }, 10000);
 
     return () => clearInterval(interval);
   }, [startHour, startMinute, endHour, endMinute]);
