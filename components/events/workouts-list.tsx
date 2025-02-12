@@ -26,14 +26,14 @@ export default async function WorkoutsList() {
     <div className="flex flex-col gap-1">
       {data.map((event) => (
         <Link key={event.id} href={`/workouts/${event.id}`}>
-        <Event
-          id={event.id}
-          name={event.name}
-          startHour={event.start_hour}
-          startMinute={event.start_minute}
-          endHour={event.end_hour}
-          endMinute={event.end_minute}
-        />
+          <Event
+            id={event.id}
+            name={event.name}
+            startHour={event.start_hour}
+            startMinute={event.start_minute}
+            endHour={event.end_hour}
+            endMinute={event.end_minute}
+          />
         </Link>
       ))}
     </div>

@@ -62,7 +62,8 @@ function isOverlapping(
 
   const newStart =
     parseInt(newEvent.start_hour) * 60 + parseInt(newEvent.start_minute);
-  const newEnd = parseInt(newEvent.end_hour) * 60 + parseInt(newEvent.end_minute);
+  const newEnd =
+    parseInt(newEvent.end_hour) * 60 + parseInt(newEvent.end_minute);
 
   return existingEvents.some((event) => {
     const existingStart =
@@ -127,14 +128,18 @@ export default function NewEvent() {
 
         if (existingWorkout) {
           toast({
-            title: "Working out more than once a day is against Sarity's philosophy",
+            title:
+              "Working out more than once a day is against Sarity's philosophy",
           });
           return;
         }
       }
 
       // Select only events from today
-      const { data } = await supabase.from("events").select("*").eq("date", date);
+      const { data } = await supabase
+        .from("events")
+        .select("*")
+        .eq("date", date);
 
       // Check for overlapping events
       const newEvent = {
@@ -186,7 +191,8 @@ export default function NewEvent() {
     } catch (error) {
       toast({
         title: "Error creating event",
-        description: error instanceof Error ? error.message : "Unknown error occurred",
+        description:
+          error instanceof Error ? error.message : "Unknown error occurred",
         variant: "destructive",
       });
     }

@@ -31,15 +31,15 @@ export default function Dashboard() {
         <ResizablePanel defaultSize={50}>
           <ResizablePanelGroup direction="vertical">
             <ResizablePanel defaultSize={51}>
-            <div className="h-[60vh] p-2">
-            <h4 className="scroll-m-20 text-xl font-semibold tracking-tight m-2">
-              Today's workout
-            </h4>
-            <Separator />
-            <ScrollArea className="h-[50vh] mt-2">
-              <WorkoutsList />
-            </ScrollArea>
-          </div>
+              <div className="h-[60vh] p-2">
+                <h4 className="scroll-m-20 text-xl font-semibold tracking-tight m-2">
+                  Today's workout
+                </h4>
+                <Separator />
+                <ScrollArea className="h-[50vh] mt-2">
+                  <WorkoutsList />
+                </ScrollArea>
+              </div>
             </ResizablePanel>
             <ResizableHandle />
             <ResizablePanel defaultSize={49}>
