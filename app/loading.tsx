@@ -1,39 +1,45 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { Loader2 } from "lucide-react"
+import { motion } from "framer-motion";
+import { Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-export default function Loading() {
+interface LoadingProps {
+  text?: string;
+  className?: string;
+}
+
+export default function Loading({ text = "Loading...", className }: LoadingProps) {
   return (
-    <div className="flex flex-col items-center justify-center flex-1 bg-background">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className={cn(
+        "flex flex-col items-center justify-center flex-1 space-y-4",
+        className
+      )}
+    >
       <motion.div
-        className="relative flex items-center justify-center"
-        initial={{ scale: 0.8, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.5 }}
+        animate={{
+          rotate: 360,
+        }}
+        transition={{
+          duration: 1,
+          repeat: Infinity,
+          ease: "linear",
+        }}
       >
-        <motion.div
-          className="absolute inset-0 rounded-full bg-primary/20"
-          animate={{
-            scale: [1, 1.2, 1],
-          }}
-          transition={{
-            duration: 1.5,
-            repeat: Number.POSITIVE_INFINITY,
-            ease: "easeInOut",
-          }}
-        />
-        <Loader2 className="w-12 h-12 text-primary animate-spin" />
+        <Loader2 className="h-8 w-8 text-primary" />
       </motion.div>
       <motion.p
-        className="mt-4 text-lg font-medium text-muted-foreground"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
+        className="text-muted-foreground text-sm"
       >
-        Loading...
+        {text}
       </motion.p>
-    </div>
-  )
+    </motion.div>
+  );
 }
-
