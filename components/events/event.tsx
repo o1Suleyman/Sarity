@@ -81,7 +81,7 @@ export default function Event({
       transition={{ duration: 0.3, ease: "easeOut" }}
     >
       <Card className="w-full overflow-x-hidden" onClick={() => {
-          router.push(`/workouts/${id}`)
+          router.push(`/events/${id}`)
         }} >
         <CardHeader className="cursor-pointer">
           <CardTitle className="flex items-center gap-2">
