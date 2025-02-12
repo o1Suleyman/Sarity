@@ -2,23 +2,14 @@
 
 import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
 
-interface LoadingProps {
-  text?: string;
-  className?: string;
-}
-
-export default function Loading({ text = "Loading...", className }: LoadingProps) {
+export default function Loading() {
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className={cn(
-        "flex flex-col items-center justify-center flex-1 space-y-4",
-        className
-      )}
+      className="flex flex-col items-center justify-center min-h-[200px] space-y-4"
     >
       <motion.div
         animate={{
@@ -38,7 +29,7 @@ export default function Loading({ text = "Loading...", className }: LoadingProps
         transition={{ delay: 0.2 }}
         className="text-muted-foreground text-sm"
       >
-        {text}
+        Loading...
       </motion.p>
     </motion.div>
   );
