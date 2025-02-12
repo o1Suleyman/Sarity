@@ -101,10 +101,11 @@ export default function NewEvent() {
           startMinute: z.string(),
           endHour: z.string(),
           endMinute: z.string(),
+          type: z.enum(["task", "workout"]),
         }),
       }),
       prompt:
-        "Use military time, for example if it's 8am return 08 and if its 7pm return 19, capitalize the name unless otherwise stated, here's the event:" +
+        "Use military time, for example if it's 8am return 08 and if its 7pm return 19, capitalize the name unless otherwise stated, if the user doesn't specify am or pm guess which one based on the context, here's the event:" +
         values.query,
     });
 
@@ -114,6 +115,23 @@ export default function NewEvent() {
     const today = new Date();
     const date = today.toLocaleDateString("en-CA"); // Format: YYYY-MM-DD
     console.log(date);
+
+    // If this is a workout, check if one already exists for today
+    if (object.event.type === "workout") {
+      const { data: existingWorkout } = await supabase
+        .from("events")
+        .select("*")
+        .eq("date", date)
+        .eq("type", "workout")
+        .single();
+
+      if (existingWorkout) {
+        toast({
+          title: "Working out more than once a day is against Sarity's philosophy",
+        });
+        return;
+      }
+    }
 
     // Select only events from today
     const { data } = await supabase.from("events").select("*").eq("date", date);
@@ -150,6 +168,7 @@ export default function NewEvent() {
       start_minute: object.event.startMinute,
       end_hour: object.event.endHour,
       end_minute: object.event.endMinute,
+      type: object.event.type,
       date: date, // Store as YYYY-MM-DD
     });
 

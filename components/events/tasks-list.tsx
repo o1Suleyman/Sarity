@@ -1,18 +1,19 @@
 import { createClient } from "@/utils/supabase/server";
 import Event from "./event";
 
-export default async function EventsList() {
+export default async function TasksList() {
   const supabase = await createClient();
 
   // Get today's date in YYYY-MM-DD format
   const today = new Date().toLocaleDateString("en-CA"); // Format: YYYY-MM-DD
 
-  // Query only events for today
+  // Query only tasks for today
   const { data, error } = await supabase
     .from("events")
     .select("*")
     .eq("date", today)
-    .order("start_hour", { ascending: true }) // Optional: sort by start time
+    .eq("type", "task")
+    .order("start_hour", { ascending: true })
     .order("start_minute", { ascending: true });
 
   if (error) {
