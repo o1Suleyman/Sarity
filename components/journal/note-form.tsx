@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
-import { toast } from "@/components/hooks/use-toast"
+import { toast, useToast } from "@/components/hooks/use-toast"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -18,6 +18,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { createClient } from "@/utils/supabase/client"
 import { useRouter } from "next/navigation"
+import SubmitButton from "../submit-button"
 
 const FormSchema = z.object({
   name: z.string().min(2, {
@@ -26,6 +27,7 @@ const FormSchema = z.object({
 })
 
 export function NoteForm() {
+  const { toast } = useToast();
     const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -40,6 +42,10 @@ export function NoteForm() {
     const { error } = await supabase.from("notes").insert([
       { name: data.name },
     ])
+    toast({
+      title: "Success",
+      description: "Note created successfully.",
+    });
     router.refresh();
   }
 
@@ -59,7 +65,8 @@ export function NoteForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <SubmitButton type="submit" initialText="Create note" pendingText="Creating note..." />
+        {/* <Button type="submit">Submit</Button> */}
       </form>
     </Form>
   )

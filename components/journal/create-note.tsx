@@ -22,9 +22,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { createNoteAction } from "./actions"
 import { NoteForm } from "./note-form"
 
 export default function DrawerDialogDemo() {
@@ -41,7 +38,7 @@ export default function DrawerDialogDemo() {
           <DialogHeader>
             <DialogTitle>Create note</DialogTitle>
           </DialogHeader>
-          <ProfileForm />
+          <NoteForm />
         </DialogContent>
       </Dialog>
     )
@@ -56,7 +53,9 @@ export default function DrawerDialogDemo() {
         <DrawerHeader className="text-left">
           <DrawerTitle>Create note</DrawerTitle>
         </DrawerHeader>
-        <ProfileForm className="px-4" />
+        <div className="px-4" >
+        <NoteForm />
+        </div>
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
             <Button variant="outline">Cancel</Button>
@@ -65,8 +64,4 @@ export default function DrawerDialogDemo() {
       </DrawerContent>
     </Drawer>
   )
-}
-
-function ProfileForm({ className }: React.ComponentProps<"form">) {
-  return (<NoteForm />)
 }

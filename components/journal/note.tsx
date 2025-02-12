@@ -16,7 +16,7 @@ export default async function Note({name, id, content}: {name:string, id:number,
           <CardTitle>{name}</CardTitle>
         </CardHeader></Link>
         <CardContent className="flex justify-between">
-          <CardDescription className="line-clamp-2">{content}</CardDescription>
+          <CardDescription className="line-clamp-2">{content ? content : "Click to edit"}</CardDescription>
           <DeleteNote id={id} />
         </CardContent>
       </Card>

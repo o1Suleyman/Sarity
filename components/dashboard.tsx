@@ -52,7 +52,7 @@ export default function Dashboard() {
               <h4 className="scroll-m-20 text-xl font-semibold tracking-tight m-2">
                   Journal
                 </h4>
-                <Separator />
+                <Separator className="mb-1"/>
                 <ScrollArea>
                 <NotesList />
                 </ScrollArea>
