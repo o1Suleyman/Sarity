@@ -12,7 +12,8 @@ export default function DeleteEvent({ id, redirect }: { id: number, redirect:boo
   const [isDeleting, setIsDeleting] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false); // Track if the component should be removed
 
-  const handleDelete = async () => {
+  const handleDelete = async (event) => {
+    event.stopPropagation();
     setIsDeleting(true);
     try {
       await DeleteEventAction(id);

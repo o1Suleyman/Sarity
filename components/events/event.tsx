@@ -80,10 +80,10 @@ export default function Event({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
     >
-      <Card className="w-full overflow-x-hidden">
-        <CardHeader onClick={() => {
+      <Card className="w-full overflow-x-hidden" onClick={() => {
           router.push(`/workouts/${id}`)
-        }} className="cursor-pointer">
+        }} >
+        <CardHeader className="cursor-pointer">
           <CardTitle className="flex items-center gap-2">
             {name}
             {isOngoing && (
@@ -92,9 +92,7 @@ export default function Event({
           </CardTitle>
         </CardHeader>
         <CardContent className="flex justify-between cursor-pointer">
-          <div onClick={() => {
-          router.push(`/workouts/${id}`)
-        }}>
+          <div>
             {formatTimeRange(startHour, startMinute, endHour, endMinute)}
           </div>
           <DeleteEvent id={id} redirect={false} />
