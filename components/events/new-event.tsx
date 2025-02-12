@@ -106,7 +106,7 @@ export default function NewEvent() {
           }),
         }),
         prompt:
-          "Use military time, for example if it's 8am return 08 and if its 7pm return 19, capitalize the name unless otherwise stated, if the user doesn't specify am or pm guess which one based on the context, fix the user's spelling mistakes, if the user doesn't specify assume a task lasts one hour, here's the event:" +
+          "Use military time, for example if it's 8am return 08 and if its 7pm return 19, capitalize the name unless otherwise stated, if the user doesn't specify am or pm guess which one based on the context, fix the user's spelling mistakes, if the user doesn't specify assume a task lasts one hour, impersonalize the verbs (for example walk my dog turns into walk dog), anyway here's the event:" +
           values.query,
       });
 
@@ -213,7 +213,7 @@ export default function NewEvent() {
               <FormControl>
                 <Input
                   {...field}
-                  placeholder="Treadmill after school"
+                  placeholder="Walk my dog after school"
                   autoFocus
                 />
               </FormControl>

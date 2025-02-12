@@ -64,7 +64,6 @@ export default function Dashboard() {
         </ResizablePanel>
       </ResizablePanelGroup>
       <NewEvent />
-      <Separator />
     </div>
   );
 }

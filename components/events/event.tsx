@@ -81,7 +81,7 @@ export default function Event({
       transition={{ duration: 0.3, ease: "easeOut" }}
     >
       <Card className="w-full overflow-x-hidden">
-        <CardHeader className="cursor-pointer">
+        <CardHeader className="cursor-pointer" onClick={() => router.push(`/events/${id}`)}>
           <CardTitle className="flex items-center gap-2">
             {name}
             {isOngoing && (
