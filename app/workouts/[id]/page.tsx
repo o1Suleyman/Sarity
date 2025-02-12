@@ -130,7 +130,7 @@ export default function Workout({
 
   return (
     <div>
-      <Card className="flex-1 mx-[20vw] my-[10vh]">
+      <Card className="flex-1 md:mx-[20vw] md:my-[10vh] mx-[10vw] my-[5vh]">
         <CardHeader>
           <Button
             variant="ghost"
