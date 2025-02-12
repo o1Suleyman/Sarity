@@ -7,7 +7,9 @@ import NewEvent from "@/components/events/new-event";
 import TasksList from "./events/tasks-list";
 import { ScrollArea } from "./ui/scroll-area";
 import { Separator } from "./ui/separator";
-import WorkoutsList from "./events/workouts-list";
+import Workout from "./events/workout";
+import NotesList from "./journal/notes-list";
+import CreateNote from "./journal/create-note";
 
 export default function Dashboard() {
   return (
@@ -37,14 +39,22 @@ export default function Dashboard() {
                 </h4>
                 <Separator />
                 <ScrollArea className="h-[50vh] mt-2">
-                  <WorkoutsList />
+                  <Workout />
                 </ScrollArea>
               </div>
             </ResizablePanel>
             <ResizableHandle />
             <ResizablePanel defaultSize={49}>
-              <div className="flex h-full items-center justify-center p-6">
-                <span className="font-semibold">Work in progress</span>
+              <div className="flex flex-col h-full p-2">
+              <h4 className="scroll-m-20 text-xl font-semibold tracking-tight m-2">
+                  Journal
+                </h4>
+                <Separator />
+                <ScrollArea>
+                <NotesList />
+                </ScrollArea>
+                <Separator className="mb-1 mt-auto"/>
+                <CreateNote />
               </div>
             </ResizablePanel>
           </ResizablePanelGroup>
