@@ -30,7 +30,7 @@ export default function Dashboard() {
         <ResizableHandle />
         <ResizablePanel defaultSize={50}>
           <ResizablePanelGroup direction="vertical">
-            <ResizablePanel defaultSize={50}>
+            <ResizablePanel defaultSize={51}>
             <div className="h-[60vh] p-2">
             <h4 className="scroll-m-20 text-xl font-semibold tracking-tight m-2">
               Today's workout
@@ -42,7 +42,7 @@ export default function Dashboard() {
           </div>
             </ResizablePanel>
             <ResizableHandle />
-            <ResizablePanel defaultSize={50}>
+            <ResizablePanel defaultSize={49}>
               <div className="flex h-full items-center justify-center p-6">
                 <span className="font-semibold">Work in progress</span>
               </div>

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import DeleteEvent from "./delete-event";
 import { useEffect, useState } from "react";
+import { Badge } from "../ui/badge";
 
 export default function Event({
   id,
@@ -82,9 +83,7 @@ export default function Event({
           <CardTitle className="flex items-center gap-2">
             {name}
             {isOngoing && (
-              <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-green-700 bg-green-100 rounded-full">
-                Ongoing
-              </span>
+              <Badge className="text-green-700 bg-green-100">Ongoing</Badge>
             )}
           </CardTitle>
         </CardHeader>

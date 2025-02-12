@@ -62,8 +62,7 @@ function isOverlapping(
 
   const newStart =
     parseInt(newEvent.start_hour) * 60 + parseInt(newEvent.start_minute);
-  const newEnd =
-    parseInt(newEvent.end_hour) * 60 + parseInt(newEvent.end_minute);
+  const newEnd = parseInt(newEvent.end_hour) * 60 + parseInt(newEvent.end_minute);
 
   return existingEvents.some((event) => {
     const existingStart =
@@ -92,96 +91,105 @@ export default function NewEvent() {
   const { isSubmitting } = form.formState;
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const { object } = await generateObject({
-      model: google("gemini-2.0-flash"),
-      schema: z.object({
-        event: z.object({
-          name: z.string(),
-          startHour: z.string(),
-          startMinute: z.string(),
-          endHour: z.string(),
-          endMinute: z.string(),
-          type: z.enum(["task", "workout"]),
+    try {
+      const { object } = await generateObject({
+        model: google("gemini-2.0-flash"),
+        schema: z.object({
+          event: z.object({
+            name: z.string(),
+            startHour: z.string(),
+            startMinute: z.string(),
+            endHour: z.string(),
+            endMinute: z.string(),
+            type: z.enum(["task", "workout"]),
+          }),
         }),
-      }),
-      prompt:
-        "Use military time, for example if it's 8am return 08 and if its 7pm return 19, capitalize the name unless otherwise stated, if the user doesn't specify am or pm guess which one based on the context, here's the event:" +
-        values.query,
-    });
+        prompt:
+          "Use military time, for example if it's 8am return 08 and if its 7pm return 19, capitalize the name unless otherwise stated, if the user doesn't specify am or pm guess which one based on the context, fix the user's spelling mistakes, here's the event:" +
+          values.query,
+      });
 
-    const supabase = await createClient();
+      const supabase = await createClient();
 
-    // Get today's date
-    const today = new Date();
-    const date = today.toLocaleDateString("en-CA"); // Format: YYYY-MM-DD
-    console.log(date);
+      // Get today's date
+      const today = new Date();
+      const date = today.toLocaleDateString("en-CA"); // Format: YYYY-MM-DD
+      console.log(date);
 
-    // If this is a workout, check if one already exists for today
-    if (object.event.type === "workout") {
-      const { data: existingWorkout } = await supabase
-        .from("events")
-        .select("*")
-        .eq("date", date)
-        .eq("type", "workout")
-        .single();
+      // If this is a workout, check if one already exists for today
+      if (object.event.type === "workout") {
+        const { data: existingWorkout } = await supabase
+          .from("events")
+          .select("*")
+          .eq("date", date)
+          .eq("type", "workout")
+          .single();
 
-      if (existingWorkout) {
+        if (existingWorkout) {
+          toast({
+            title: "Working out more than once a day is against Sarity's philosophy",
+          });
+          return;
+        }
+      }
+
+      // Select only events from today
+      const { data } = await supabase.from("events").select("*").eq("date", date);
+
+      // Check for overlapping events
+      const newEvent = {
+        start_hour: object.event.startHour,
+        start_minute: object.event.startMinute,
+        end_hour: object.event.endHour,
+        end_minute: object.event.endMinute,
+      };
+
+      const overlapCheck = isOverlapping(newEvent, data || []);
+
+      if (overlapCheck === "invalid_time_order") {
         toast({
-          title: "Working out more than once a day is against Sarity's philosophy",
+          title: "The start time must be before the end time.",
         });
         return;
       }
-    }
 
-    // Select only events from today
-    const { data } = await supabase.from("events").select("*").eq("date", date);
+      if (data && overlapCheck === true) {
+        toast({
+          title:
+            "This event is overlapping an existing event! Choose a different time period.",
+        });
+        return;
+      }
 
-    // Check for overlapping events
-    const newEvent = {
-      start_hour: object.event.startHour,
-      start_minute: object.event.startMinute,
-      end_hour: object.event.endHour,
-      end_minute: object.event.endMinute,
-    };
-
-    const overlapCheck = isOverlapping(newEvent, data || []);
-
-    if (overlapCheck === "invalid_time_order") {
-      toast({
-        title: "The start time must be before the end time.",
+      // Insert the new event with the date
+      const { error } = await supabase.from("events").insert({
+        name: object.event.name,
+        start_hour: object.event.startHour,
+        start_minute: object.event.startMinute,
+        end_hour: object.event.endHour,
+        end_minute: object.event.endMinute,
+        type: object.event.type,
+        date: date, // Store as YYYY-MM-DD
       });
-      return;
-    }
 
-    if (data && overlapCheck === true) {
-      toast({
-        title:
-          "This event is overlapping an existing event! Choose a different time period.",
-      });
-      return;
-    }
+      if (error) {
+        toast({
+          title: "Error creating event",
+          description: error.message,
+          variant: "destructive",
+        });
+        return;
+      }
 
-    // Insert the new event with the date
-    const { error } = await supabase.from("events").insert({
-      name: object.event.name,
-      start_hour: object.event.startHour,
-      start_minute: object.event.startMinute,
-      end_hour: object.event.endHour,
-      end_minute: object.event.endMinute,
-      type: object.event.type,
-      date: date, // Store as YYYY-MM-DD
-    });
-
-    if (error) {
+      form.reset(); // Clear the form after successful submission
+      router.refresh();
+    } catch (error) {
       toast({
         title: "Error creating event",
-        description: error.message,
+        description: error instanceof Error ? error.message : "Unknown error occurred",
         variant: "destructive",
       });
-      return;
     }
-
-    router.refresh();
   }
 
   return (
@@ -199,7 +207,7 @@ export default function NewEvent() {
               <FormControl>
                 <Input
                   {...field}
-                  placeholder="CS IA from 7 p.m. to 8 p.m."
+                  placeholder="Treadmill after school"
                   autoFocus
                 />
               </FormControl>
