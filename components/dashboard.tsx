@@ -13,7 +13,10 @@ import CreateNote from "./journal/create-note";
 
 export default function Dashboard() {
   return (
-    <div className="flex-1 flex flex-col justify-center items-center gap-4">
+    <div className="flex-1 flex flex-col justify-center items-center gap-4 m-1">
+          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
+      Your day at a glance
+    </h2>
       <ResizablePanelGroup
         direction="horizontal"
         className="max-w-md rounded-lg border md:min-w-[70vw]"
@@ -61,6 +64,8 @@ export default function Dashboard() {
         </ResizablePanel>
       </ResizablePanelGroup>
       <NewEvent />
+      <Separator />
+      {/* < */}
     </div>
   );
 }
