@@ -3,23 +3,22 @@ import Event from "./event";
 
 export default async function EventsList() {
   const supabase = await createClient();
-  
+
   // Get today's date in YYYY-MM-DD format
-const today = new Date().toLocaleDateString("en-CA"); // Format: YYYY-MM-DD
-  
+  const today = new Date().toLocaleDateString("en-CA"); // Format: YYYY-MM-DD
+
   // Query only events for today
   const { data, error } = await supabase
     .from("events")
     .select("*")
-    .eq('date', today)
-    .order('start_hour', { ascending: true })  // Optional: sort by start time
-    .order('start_minute', { ascending: true });
+    .eq("date", today)
+    .order("start_hour", { ascending: true }) // Optional: sort by start time
+    .order("start_minute", { ascending: true });
 
   if (error) {
     console.error("Error fetching events:", error);
     return <div>Error loading events</div>;
   }
-
 
   return (
     <div className="flex flex-col gap-1">

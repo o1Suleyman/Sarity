@@ -33,7 +33,7 @@ function isValidTimeOrder(
   startHour: string,
   startMinute: string,
   endHour: string,
-  endMinute: string
+  endMinute: string,
 ) {
   const startTime = parseInt(startHour) * 60 + parseInt(startMinute);
   const endTime = parseInt(endHour) * 60 + parseInt(endMinute);
@@ -47,14 +47,14 @@ function isOverlapping(
     end_hour: string;
     end_minute: string;
   },
-  existingEvents: any[]
+  existingEvents: any[],
 ) {
   if (
     !isValidTimeOrder(
       newEvent.start_hour,
       newEvent.start_minute,
       newEvent.end_hour,
-      newEvent.end_minute
+      newEvent.end_minute,
     )
   ) {
     return "invalid_time_order";
@@ -62,7 +62,8 @@ function isOverlapping(
 
   const newStart =
     parseInt(newEvent.start_hour) * 60 + parseInt(newEvent.start_minute);
-  const newEnd = parseInt(newEvent.end_hour) * 60 + parseInt(newEvent.end_minute);
+  const newEnd =
+    parseInt(newEvent.end_hour) * 60 + parseInt(newEvent.end_minute);
 
   return existingEvents.some((event) => {
     const existingStart =
@@ -112,13 +113,10 @@ export default function NewEvent() {
     // Get today's date
     const today = new Date();
     const date = today.toLocaleDateString("en-CA"); // Format: YYYY-MM-DD
-    console.log(date)
+    console.log(date);
 
     // Select only events from today
-    const { data } = await supabase
-      .from("events")
-      .select("*")
-      .eq("date", date);
+    const { data } = await supabase.from("events").select("*").eq("date", date);
 
     // Check for overlapping events
     const newEvent = {

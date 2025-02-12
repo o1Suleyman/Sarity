@@ -1,11 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import DeleteEvent from "./delete-event";
 import { useEffect, useState } from "react";
 
@@ -31,8 +26,7 @@ export default function Event({
     const currentHour = now.getHours();
     const currentMinute = now.getMinutes();
 
-    const startTimeInMinutes =
-      parseInt(startHour) * 60 + parseInt(startMinute);
+    const startTimeInMinutes = parseInt(startHour) * 60 + parseInt(startMinute);
     const endTimeInMinutes = parseInt(endHour) * 60 + parseInt(endMinute);
     const currentTimeInMinutes = currentHour * 60 + currentMinute;
 
@@ -58,7 +52,7 @@ export default function Event({
     startHour: string,
     startMinute: string,
     endHour: string,
-    endMinute: string
+    endMinute: string,
   ) => {
     const startHourNum = parseInt(startHour);
     const endHourNum = parseInt(endHour);

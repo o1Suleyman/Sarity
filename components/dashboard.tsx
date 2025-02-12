@@ -17,11 +17,11 @@ export default function Dashboard() {
       >
         <ResizablePanel defaultSize={50}>
           <div className="h-[60vh] p-2">
-          <h4 className="scroll-m-20 text-xl font-semibold tracking-tight m-2">
-      Today's tasks
-    </h4>
-                <Separator />
-                <ScrollArea className="h-[50vh] mt-2">
+            <h4 className="scroll-m-20 text-xl font-semibold tracking-tight m-2">
+              Today's tasks
+            </h4>
+            <Separator />
+            <ScrollArea className="h-[50vh] mt-2">
               <EventsList />
             </ScrollArea>
           </div>
