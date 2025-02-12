@@ -1,22 +1,20 @@
-"use client"
+"use client";
 import { motion } from "framer-motion";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "../ui/button";
 import DeleteEvent from "./delete-event";
+import { useEffect, useState } from "react";
 
 export default function Event({
   id,
   name,
   startHour,
-  endHour,
   startMinute,
+  endHour,
   endMinute,
 }: {
   id: number;
@@ -26,6 +24,36 @@ export default function Event({
   startMinute: string;
   endMinute: string;
 }) {
+  const [isOngoing, setIsOngoing] = useState(false);
+
+  const checkIfOngoing = () => {
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+
+    const startTimeInMinutes =
+      parseInt(startHour) * 60 + parseInt(startMinute);
+    const endTimeInMinutes = parseInt(endHour) * 60 + parseInt(endMinute);
+    const currentTimeInMinutes = currentHour * 60 + currentMinute;
+
+    return (
+      currentTimeInMinutes >= startTimeInMinutes &&
+      currentTimeInMinutes <= endTimeInMinutes
+    );
+  };
+
+  useEffect(() => {
+    // Check initially
+    setIsOngoing(checkIfOngoing());
+
+    // Update every minute
+    const interval = setInterval(() => {
+      setIsOngoing(checkIfOngoing());
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, [startHour, startMinute, endHour, endMinute]);
+
   const formatTimeRange = (
     startHour: string,
     startMinute: string,
@@ -57,7 +85,14 @@ export default function Event({
     >
       <Card className="w-full overflow-x-hidden">
         <CardHeader>
-          <CardTitle>{name}</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            {name}
+            {isOngoing && (
+              <span className="inline-flex items-center px-2 py-1 text-xs font-medium text-green-700 bg-green-100 rounded-full">
+                Ongoing
+              </span>
+            )}
+          </CardTitle>
         </CardHeader>
         <CardContent className="flex justify-between">
           <div>
