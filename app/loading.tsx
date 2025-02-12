@@ -9,7 +9,7 @@ export default function Loading() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="flex flex-col items-center justify-center min-h-[200px] space-y-4"
+      className="flex flex-col items-center justify-center flex-1 space-y-4"
     >
       <motion.div
         animate={{
