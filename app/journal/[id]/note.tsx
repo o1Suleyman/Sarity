@@ -37,16 +37,14 @@ export default function Note({ id, name, content }: NoteProps) {
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     const supabase = createClient();
 
-    const { error } = await supabase
-      .from("notes")
-      .upsert(
-        {
-          id, // Use the provided `id` to match the row
-          content: data.content,
-          name: name,
-        },
-        { onConflict: "id" } // Specify the column to check for conflicts
-      );
+    const { error } = await supabase.from("notes").upsert(
+      {
+        id, // Use the provided `id` to match the row
+        content: data.content,
+        name: name,
+      },
+      { onConflict: "id" }, // Specify the column to check for conflicts
+    );
 
     if (error) {
       console.error("Error saving note:", error);

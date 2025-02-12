@@ -93,7 +93,7 @@ export default function Event({
           <div>
             {formatTimeRange(startHour, startMinute, endHour, endMinute)}
           </div>
-          <DeleteEvent id={id}/>
+          <DeleteEvent id={id} />
         </CardContent>
       </Card>
     </motion.div>

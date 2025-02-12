@@ -33,7 +33,7 @@ function isValidTimeOrder(
   startHour: string,
   startMinute: string,
   endHour: string,
-  endMinute: string
+  endMinute: string,
 ) {
   const startTime = parseInt(startHour) * 60 + parseInt(startMinute);
   const endTime = parseInt(endHour) * 60 + parseInt(endMinute);
@@ -48,14 +48,14 @@ function isOverlapping(
     end_minute: string;
   },
   existingEvents: any[],
-  currentEventId: number
+  currentEventId: number,
 ) {
   if (
     !isValidTimeOrder(
       newEvent.start_hour,
       newEvent.start_minute,
       newEvent.end_hour,
-      newEvent.end_minute
+      newEvent.end_minute,
     )
   ) {
     return "invalid_time_order";
@@ -63,7 +63,8 @@ function isOverlapping(
 
   const newStart =
     parseInt(newEvent.start_hour) * 60 + parseInt(newEvent.start_minute);
-  const newEnd = parseInt(newEvent.end_hour) * 60 + parseInt(newEvent.end_minute);
+  const newEnd =
+    parseInt(newEvent.end_hour) * 60 + parseInt(newEvent.end_minute);
 
   return existingEvents.some((event) => {
     // Skip checking against the current event being updated
@@ -134,7 +135,6 @@ export default function UpdateEventForm({
         throw new Error("Event not found");
       }
 
-
       // Select events from the same date
       const { data } = await supabase
         .from("events")
@@ -167,15 +167,13 @@ export default function UpdateEventForm({
       }
 
       // Upsert the event
-      const { error } = await supabase
-        .from("events")
-        .upsert({
-          id: eventId, // Specify the ID for upsert
-          start_hour: object.event.startHour,
-          start_minute: object.event.startMinute,
-          end_hour: object.event.endHour,
-          end_minute: object.event.endMinute,
-        });
+      const { error } = await supabase.from("events").upsert({
+        id: eventId, // Specify the ID for upsert
+        start_hour: object.event.startHour,
+        start_minute: object.event.startMinute,
+        end_hour: object.event.endHour,
+        end_minute: object.event.endMinute,
+      });
 
       if (error) {
         toast({

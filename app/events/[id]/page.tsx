@@ -93,7 +93,7 @@ export default function Workout({
     startHour: string,
     startMinute: string,
     endHour: string,
-    endMinute: string
+    endMinute: string,
   ) => {
     const startHourNum = parseInt(startHour);
     const endHourNum = parseInt(endHour);
@@ -153,7 +153,7 @@ export default function Workout({
                 eventData.start_hour,
                 eventData.start_minute,
                 eventData.end_hour,
-                eventData.end_minute
+                eventData.end_minute,
               )}
             </div>
             <div className="flex items-center gap-2">
@@ -162,26 +162,26 @@ export default function Workout({
           </CardDescription>
         </CardHeader>
         <CardFooter className="flex justify-end gap-2">
-        <Dialog
-  open={isUpdateDialogOpen}
-  onOpenChange={setIsUpdateDialogOpen}
->
-  <DialogTrigger asChild>
-    <Button variant="outline">Edit</Button>
-  </DialogTrigger>
-  <DialogContent className="sm:max-w-[425px]">
-    <div className="flex flex-col gap-4">
-      <DialogTitle className="text-xl font-semibold">
-        Update event details
-      </DialogTitle>
-      <UpdateEventForm
-        eventId={eventData.id}
-        currentName={eventData.name}
-        onSuccess={handleUpdateSuccess}
-      />
-    </div>
-  </DialogContent>
-</Dialog>
+          <Dialog
+            open={isUpdateDialogOpen}
+            onOpenChange={setIsUpdateDialogOpen}
+          >
+            <DialogTrigger asChild>
+              <Button variant="outline">Edit</Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <div className="flex flex-col gap-4">
+                <DialogTitle className="text-xl font-semibold">
+                  Update event details
+                </DialogTitle>
+                <UpdateEventForm
+                  eventId={eventData.id}
+                  currentName={eventData.name}
+                  onSuccess={handleUpdateSuccess}
+                />
+              </div>
+            </DialogContent>
+          </Dialog>
           <DeleteEvent id={eventData.id} redirect={true} />
         </CardFooter>
       </Card>

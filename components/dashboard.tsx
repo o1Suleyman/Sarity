@@ -14,9 +14,9 @@ import CreateNote from "./journal/create-note";
 export default function Dashboard() {
   return (
     <div className="flex-1 flex flex-col items-center gap-2 m-2">
-          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
-      Your day at a glance
-    </h2>
+      <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
+        Your day at a glance
+      </h2>
       <ResizablePanelGroup
         direction="horizontal"
         className="max-w-md rounded-lg border md:min-w-[70vw]"
@@ -49,14 +49,14 @@ export default function Dashboard() {
             <ResizableHandle />
             <ResizablePanel defaultSize={49}>
               <div className="flex flex-col h-full p-2">
-              <h4 className="scroll-m-20 text-xl font-semibold tracking-tight m-2">
+                <h4 className="scroll-m-20 text-xl font-semibold tracking-tight m-2">
                   Journal
                 </h4>
-                <Separator className="mb-1"/>
+                <Separator className="mb-1" />
                 <ScrollArea>
-                <NotesList />
+                  <NotesList />
                 </ScrollArea>
-                <Separator className="mb-1 mt-auto"/>
+                <Separator className="mb-1 mt-auto" />
                 <CreateNote />
               </div>
             </ResizablePanel>

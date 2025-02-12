@@ -1,9 +1,9 @@
-"use client"
-import * as React from "react"
+"use client";
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
-import { useMediaQuery } from "@/components/hooks/use-media-query"
-import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils";
+import { useMediaQuery } from "@/components/hooks/use-media-query";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -11,7 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 import {
   Drawer,
   DrawerClose,
@@ -21,12 +21,12 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/components/ui/drawer"
-import { NoteForm } from "./note-form"
+} from "@/components/ui/drawer";
+import { NoteForm } from "./note-form";
 
 export default function DrawerDialogDemo() {
-  const [open, setOpen] = React.useState(false)
-  const isDesktop = useMediaQuery("(min-width: 768px)")
+  const [open, setOpen] = React.useState(false);
+  const isDesktop = useMediaQuery("(min-width: 768px)");
 
   if (isDesktop) {
     return (
@@ -41,7 +41,7 @@ export default function DrawerDialogDemo() {
           <NoteForm />
         </DialogContent>
       </Dialog>
-    )
+    );
   }
 
   return (
@@ -53,8 +53,8 @@ export default function DrawerDialogDemo() {
         <DrawerHeader className="text-left">
           <DrawerTitle>Create note</DrawerTitle>
         </DrawerHeader>
-        <div className="px-4" >
-        <NoteForm />
+        <div className="px-4">
+          <NoteForm />
         </div>
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
@@ -63,5 +63,5 @@ export default function DrawerDialogDemo() {
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
-  )
+  );
 }
