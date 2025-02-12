@@ -58,18 +58,21 @@ export type Database = {
       }
       notes: {
         Row: {
+          content: string | null
           created_at: string
           id: number
           name: string
           user_id: string | null
         }
         Insert: {
+          content?: string | null
           created_at?: string
           id?: number
           name: string
           user_id?: string | null
         }
         Update: {
+          content?: string | null
           created_at?: string
           id?: number
           name?: string

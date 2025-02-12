@@ -80,9 +80,7 @@ export default function Event({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
     >
-      <Card className="w-full overflow-x-hidden" onClick={() => {
-          router.push(`/events/${id}`)
-        }} >
+      <Card className="w-full overflow-x-hidden">
         <CardHeader className="cursor-pointer">
           <CardTitle className="flex items-center gap-2">
             {name}
@@ -95,7 +93,7 @@ export default function Event({
           <div>
             {formatTimeRange(startHour, startMinute, endHour, endMinute)}
           </div>
-          <DeleteEvent id={id} redirect={false} />
+          <DeleteEvent id={id}/>
         </CardContent>
       </Card>
     </motion.div>
