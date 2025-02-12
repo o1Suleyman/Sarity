@@ -5,6 +5,7 @@ import DeleteEvent from "./delete-event";
 import { useEffect, useState } from "react";
 import { Badge } from "../ui/badge";
 import { useRouter } from "next/navigation";
+import { BorderBeam } from "../magicui/border-beam";
 
 export default function Event({
   id,
@@ -79,6 +80,7 @@ export default function Event({
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
+      className="relative"
     >
       <Card className="w-full overflow-x-hidden">
         <CardHeader className="cursor-pointer" onClick={() => router.push(`/events/${id}`)}>
@@ -95,6 +97,7 @@ export default function Event({
           </div>
           <DeleteEvent id={id} />
         </CardContent>
+        {isOngoing ? <BorderBeam colorFrom="#008236" colorTo="#dcfce7" duration={7} size={60}/> : null}
       </Card>
     </motion.div>
   );
