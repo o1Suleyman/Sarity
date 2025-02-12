@@ -1,5 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import Event from "./event";
+import Link from "next/link";
 
 export default async function WorkoutsList() {
   const supabase = await createClient();
@@ -24,8 +25,8 @@ export default async function WorkoutsList() {
   return (
     <div className="flex flex-col gap-1">
       {data.map((event) => (
+        <Link key={event.id} href={`/workouts/${event.id}`}>
         <Event
-          key={event.id}
           id={event.id}
           name={event.name}
           startHour={event.start_hour}
@@ -33,6 +34,7 @@ export default async function WorkoutsList() {
           endHour={event.end_hour}
           endMinute={event.end_minute}
         />
+        </Link>
       ))}
     </div>
   );

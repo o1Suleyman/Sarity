@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import DeleteEvent from "./delete-event";
 import { useEffect, useState } from "react";
 import { Badge } from "../ui/badge";
+import { useRouter } from "next/navigation";
 
 export default function Event({
   id,
@@ -21,6 +22,7 @@ export default function Event({
   endMinute: string;
 }) {
   const [isOngoing, setIsOngoing] = useState(false);
+  // const router = useRouter();
 
   const checkIfOngoing = () => {
     const now = new Date();
@@ -77,6 +79,9 @@ export default function Event({
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
+      // onClick={() => {
+      //   router.push(`/workouts/${id}`);
+      // }}
     >
       <Card className="w-full overflow-x-hidden">
         <CardHeader>
