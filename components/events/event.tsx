@@ -22,7 +22,7 @@ export default function Event({
   endMinute: string;
 }) {
   const [isOngoing, setIsOngoing] = useState(false);
-  // const router = useRouter();
+  const router = useRouter();
 
   const checkIfOngoing = () => {
     const now = new Date();
@@ -79,12 +79,11 @@ export default function Event({
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
-      // onClick={() => {
-      //   router.push(`/workouts/${id}`);
-      // }}
     >
       <Card className="w-full overflow-x-hidden">
-        <CardHeader>
+        <CardHeader onClick={() => {
+          router.push(`/workouts/${id}`)
+        }} className="cursor-pointer">
           <CardTitle className="flex items-center gap-2">
             {name}
             {isOngoing && (
@@ -92,8 +91,10 @@ export default function Event({
             )}
           </CardTitle>
         </CardHeader>
-        <CardContent className="flex justify-between">
-          <div>
+        <CardContent className="flex justify-between cursor-pointer">
+          <div onClick={() => {
+          router.push(`/workouts/${id}`)
+        }}>
             {formatTimeRange(startHour, startMinute, endHour, endMinute)}
           </div>
           <DeleteEvent id={id} />
