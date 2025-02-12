@@ -27,6 +27,7 @@ interface EventData {
   end_minute: string;
   date: string;
   type: string;
+  duration?: string; // Added duration field
 }
 
 export default function Workout({
@@ -48,6 +49,30 @@ export default function Workout({
         .single();
 
       if (data) {
+        // Calculate duration
+        const startHour = parseInt(data.start_hour);
+        const startMinute = parseInt(data.start_minute);
+        const endHour = parseInt(data.end_hour);
+        const endMinute = parseInt(data.end_minute);
+
+        const startTime = startHour * 60 + startMinute;
+        const endTime = endHour * 60 + endMinute;
+        const durationMinutes = endTime - startTime;
+
+        const hours = Math.floor(durationMinutes / 60);
+        const minutes = durationMinutes % 60;
+
+        // Conditionally format duration
+        if (hours === 0 && minutes === 0) {
+          data.duration = "0m"; // Edge case: no duration
+        } else if (hours === 0) {
+          data.duration = `${minutes}m`;
+        } else if (minutes === 0) {
+          data.duration = `${hours}h`;
+        } else {
+          data.duration = `${hours}h ${minutes}m`;
+        }
+
         setEventData(data as EventData);
       }
     };
@@ -98,24 +123,27 @@ export default function Workout({
             className="w-fit mb-4"
             onClick={() => router.push("/")}
           >
-            <ArrowLeft className="mr-2 h-4 w-4" /> Back
+            <ArrowLeft className="mr-2 size-4" /> Back
           </Button>
           <CardTitle className="text-3xl flex items-center gap-3">
             {eventData.name}
           </CardTitle>
           <CardDescription className="space-y-2 mt-4">
             <div className="flex items-center gap-2">
-              <Calendar className="h-4 w-4" />
+              <Calendar className="size-4" />
               {formatDate(eventData.date)}
             </div>
             <div className="flex items-center gap-2">
-              <Clock className="h-4 w-4" />
+              <Clock className="size-4" />
               {formatTimeRange(
                 eventData.start_hour,
                 eventData.start_minute,
                 eventData.end_hour,
                 eventData.end_minute
               )}
+            </div>
+            <div className="flex items-center gap-2">
+              <Badge>Duration: {eventData.duration}</Badge>
             </div>
           </CardDescription>
         </CardHeader>
