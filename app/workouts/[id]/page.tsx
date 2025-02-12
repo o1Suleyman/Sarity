@@ -15,11 +15,11 @@ export default async function Workout({
 }) {
   const id = (await params).id;
   const supabase = await createClient();
+  const { data, error } = await supabase.from("events").select("*").eq("id", Number(id)).single();
   return (
-    <Card>
+    <Card className="flex-1 mx-[20vw] my-[10vh]">
       <CardHeader>
-        <CardTitle>Card Title</CardTitle>
-        <CardDescription>Card Description</CardDescription>
+        <CardTitle>{data?.name}</CardTitle>
       </CardHeader>
       <CardContent>
         <p>Card Content</p>
