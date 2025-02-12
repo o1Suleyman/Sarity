@@ -5,8 +5,10 @@ import { DeleteEventAction } from "./actions";
 import { Trash2, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
 
-export default function DeleteEvent({ id }: { id: number }) {
+export default function DeleteEvent({ id, redirect }: { id: number, redirect:boolean }) {
+  const router = useRouter();
   const [isDeleting, setIsDeleting] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false); // Track if the component should be removed
 
@@ -17,6 +19,9 @@ export default function DeleteEvent({ id }: { id: number }) {
       setIsDeleted(true); // Trigger fade-out
     } finally {
       setIsDeleting(false);
+    }
+    if (redirect) {
+      router.push("/")
     }
   };
 
