@@ -2,7 +2,7 @@
 
 import { Button } from "../ui/button";
 import DeleteGoalAction from "./actions";
-import { Trash2, Loader2 } from "lucide-react";
+import { Trash2, Loader2, CheckCircle } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
@@ -33,7 +33,7 @@ export default function DeleteGoal({ id }: { id: number }) {
         >
           <Button
             onClick={handleDelete}
-            variant="destructive"
+            variant="default"
             disabled={isDeleting}
             aria-label="Delete event"
             className="ml-1"
@@ -41,7 +41,7 @@ export default function DeleteGoal({ id }: { id: number }) {
             {isDeleting ? (
               <Loader2 className="size-4 animate-spin" />
             ) : (
-              <Trash2 className="size-4" />
+              <CheckCircle className="size-4" />
             )}
           </Button>
         </motion.div>
