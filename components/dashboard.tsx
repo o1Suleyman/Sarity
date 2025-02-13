@@ -11,6 +11,8 @@ import Workout from "./events/workout";
 import NotesList from "./journal/notes-list";
 import CreateNote from "./journal/create-note";
 import Link from "next/link";
+import GoalsList from "./goals/goals-list";
+import CreateGoal from "./goals/create-goal";
 
 export default function Dashboard() {
   return (
@@ -67,6 +69,12 @@ export default function Dashboard() {
         </ResizablePanel>
       </ResizablePanelGroup>
       <NewEvent />
+      <Separator />
+      <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
+        Your goals
+      </h2>
+      <GoalsList />
+      <CreateGoal />
     </div>
   );
 }

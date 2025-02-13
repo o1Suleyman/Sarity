@@ -5,7 +5,7 @@ import DeleteEvent from "./delete-event";
 import { useEffect, useState } from "react";
 import { Badge } from "../ui/badge";
 import { useRouter } from "next/navigation";
-import { BorderBeam } from "../magicui/border-beam";
+import { BorderBeam } from "../ui/border-beam";
 
 export default function Event({
   id,

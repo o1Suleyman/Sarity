@@ -1,8 +1,21 @@
-export default function Goal({name, completed}) {
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+  } from "@/components/ui/card"
+import DeleteGoal from "./delete-goal"
+export default function Goal({name, id}:{name:string, id:number}) {
     return (
-        <div className="flex items-center justify-between">
-            <div className="text-xl font-bold">{name}</div>
-            <div className="text-xl font-bold">{completed}</div>
-        </div>
+        <Card>
+  <CardHeader className="p-5">
+    <div className="flex justify-between items-center">
+    <CardTitle>{name}</CardTitle>
+    <DeleteGoal id={id} />
+    </div>
+  </CardHeader>
+</Card>
     )
 }
