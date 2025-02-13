@@ -8,8 +8,6 @@ export default async function HomePage() {
   return error || !data?.user ? (
     <Home />
   ) : (
-    <>
       <Dashboard />
-    </>
   );
 }
