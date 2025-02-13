@@ -1,17 +1,21 @@
 import { createClient } from "@/utils/supabase/server";
 import Event from "./event";
 
-export default async function TasksList() {
+export default async function TasksList({ showTomorrow = false }) {
   const supabase = await createClient();
 
-  // Get today's date in YYYY-MM-DD format
-  const today = new Date().toLocaleDateString("en-CA"); // Format: YYYY-MM-DD
+  // Calculate the date based on the `showTomorrow` prop
+  const date = new Date();
+  if (showTomorrow) {
+    date.setDate(date.getDate() + 1); // Move to the next day
+  }
+  const formattedDate = date.toLocaleDateString("en-CA"); // Format: YYYY-MM-DD
 
-  // Query only tasks for today
+  // Query tasks for the specified date
   const { data, error } = await supabase
     .from("events")
     .select("*")
-    .eq("date", today)
+    .eq("date", formattedDate)
     .eq("type", "task")
     .order("start_hour", { ascending: true })
     .order("start_minute", { ascending: true });

@@ -103,21 +103,24 @@ export default function NewEvent() {
             endHour: z.string(),
             endMinute: z.string(),
             type: z.enum(["task", "workout"]),
+            isTomorrow: z.boolean().optional(), // Add a flag for "tomorrow"
           }),
         }),
         prompt:
-          "Use military time, for example if it's 8am return 08 and if its 7pm return 19, capitalize the name unless otherwise stated, if the user doesn't specify am or pm guess which one based on the context, fix the user's spelling mistakes, if the user doesn't specify assume a task lasts one hour, impersonalize the verbs (for example walk my dog turns into walk dog), anyway here's the event:" +
+          "Use military time, for example if it's 8am return 08 and if its 7pm return 19, capitalize the name unless otherwise stated, if the user doesn't specify am or pm guess which one based on the context, fix the user's spelling mistakes, if the user doesn't specify assume a task lasts one hour, impersonalize the verbs (for example walk my dog turns into walk dog), if the user mentions tomorrow, set isTomorrow to true, anyway here's the event:" +
           values.query,
       });
 
       const supabase = await createClient();
 
-      // Get today's date
+      // Determine the date based on whether the event is for tomorrow
       const today = new Date();
-      const date = today.toLocaleDateString("en-CA"); // Format: YYYY-MM-DD
-      console.log(date);
+      const date = object.event.isTomorrow
+        ? new Date(today.setDate(today.getDate() + 1))
+            .toLocaleDateString("en-CA") // Format: YYYY-MM-DD
+        : today.toLocaleDateString("en-CA");
 
-      // If this is a workout, check if one already exists for today
+      // If this is a workout, check if one already exists for the selected date
       if (object.event.type === "workout") {
         const { data: existingWorkout } = await supabase
           .from("events")
@@ -135,7 +138,7 @@ export default function NewEvent() {
         }
       }
 
-      // Select only events from today
+      // Select only events from the selected date
       const { data } = await supabase
         .from("events")
         .select("*")
@@ -166,7 +169,7 @@ export default function NewEvent() {
         return;
       }
 
-      // Insert the new event with the date
+      // Insert the new event with the selected date
       const { error } = await supabase.from("events").insert({
         name: object.event.name,
         start_hour: object.event.startHour,
