@@ -52,7 +52,6 @@ export default function CreateGoal() {
           name="goal"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Goal</FormLabel>
               <FormControl>
                 <Input {...field} disabled={form.formState.isSubmitting} autoComplete="off" autoFocus/>
               </FormControl>
