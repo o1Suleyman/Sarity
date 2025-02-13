@@ -213,6 +213,7 @@ export default function NewEvent() {
               <FormControl>
                 <Input
                   {...field}
+                  autoComplete="off"
                   placeholder="Walk my dog after school"
                   autoFocus
                 />
