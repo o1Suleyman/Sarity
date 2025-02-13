@@ -21,7 +21,7 @@ import { useRouter } from "next/navigation"
 
 const FormSchema = z.object({
   goal: z.string().min(2, {
-    message: "goal must be at least 2 characters.",
+    message: "Goal must be at least 2 characters.",
   }),
 })
 
