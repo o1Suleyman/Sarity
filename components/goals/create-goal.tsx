@@ -54,7 +54,7 @@ export default function CreateGoal() {
             <FormItem>
               <FormLabel>Goal</FormLabel>
               <FormControl>
-                <Input {...field} disabled={form.formState.isSubmitting} autoComplete="off" />
+                <Input {...field} disabled={form.formState.isSubmitting} autoComplete="off" autoFocus/>
               </FormControl>
               <FormMessage />
             </FormItem>
