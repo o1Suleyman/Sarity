@@ -182,7 +182,7 @@ export default function Workout({
               </div>
             </DialogContent>
           </Dialog>
-          <DeleteEvent id={eventData.id} redirect={true} />
+          <DeleteEvent id={eventData.id} />
         </CardFooter>
       </Card>
     </div>
