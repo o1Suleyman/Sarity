@@ -2,10 +2,11 @@
 
 import { Button } from "../ui/button";
 import { DeleteEventAction } from "./actions";
-import { Trash2, Loader2 } from "lucide-react";
+import { Trash2, Loader2, Check } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
+import confetti from "canvas-confetti";
 
 export default function DeleteEvent({ id }: { id: number }) {
   const router = useRouter();
@@ -19,6 +20,7 @@ export default function DeleteEvent({ id }: { id: number }) {
       setIsDeleted(true); // Trigger fade-out
     } finally {
       setIsDeleting(false);
+      confetti();
     }
   };
 
@@ -33,15 +35,14 @@ export default function DeleteEvent({ id }: { id: number }) {
         >
           <Button
             onClick={handleDelete}
-            variant="destructive"
             disabled={isDeleting}
             aria-label="Delete event"
-            className="ml-1"
+            className="ml-1 bg-green-600 hover:bg-green-700"
           >
             {isDeleting ? (
               <Loader2 className="size-4 animate-spin" />
             ) : (
-              <Trash2 className="size-4" />
+              <Check className="size-4" />
             )}
           </Button>
         </motion.div>
