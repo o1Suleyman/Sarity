@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import confetti from "canvas-confetti";
 
-export default function DeleteEvent({ id }: { id: number }) {
+export default function DeleteEvent({ id, redirect }: { id: number, redirect:boolean }) {
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false); // Track if the component should be removed
@@ -21,7 +21,10 @@ export default function DeleteEvent({ id }: { id: number }) {
     } finally {
       setIsDeleting(false);
       confetti();
+      if (redirect) {
+        router.push("/");
     }
+  }
   };
 
   return (

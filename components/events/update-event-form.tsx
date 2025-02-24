@@ -111,6 +111,7 @@ export default function UpdateEventForm({
         model: google("gemini-2.0-flash"),
         schema: z.object({
           event: z.object({
+            name: z.string(),
             startHour: z.string(),
             startMinute: z.string(),
             endHour: z.string(),
@@ -118,7 +119,7 @@ export default function UpdateEventForm({
           }),
         }),
         prompt:
-          "Use military time, for example if it's 8am return 08 and if its 7pm return 19, if the user doesn't specify am or pm guess which one based on the context, here's the event:" +
+          "Use military time, for example if it's 8am return 08 and if its 7pm return 19, if the user doesn't specify am or pm guess which one based on the context, auto-capitalize the name, here's the event:" +
           values.query,
       });
 
@@ -167,13 +168,13 @@ export default function UpdateEventForm({
       }
 
       // Upsert the event
-      const { error } = await supabase.from("events").upsert({
-        id: eventId, // Specify the ID for upsert
+      const { error } = await supabase.from("events").update({
+        name: object.event.name,
         start_hour: object.event.startHour,
         start_minute: object.event.startMinute,
         end_hour: object.event.endHour,
         end_minute: object.event.endMinute,
-      });
+      }).eq("id", eventId);
 
       if (error) {
         toast({
