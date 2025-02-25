@@ -36,10 +36,10 @@ export async function updateSession(request: NextRequest) {
   // IMPORTANT: DO NOT REMOVE auth.getUser()
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (!session?.user && !request.nextUrl.pathname.startsWith("/")) {
+  if (!user && !request.nextUrl.pathname.startsWith("/")) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone();
     url.pathname = "/";
