@@ -95,7 +95,7 @@ export default function Event({
           <div>
             {formatTimeRange(startHour, startMinute, endHour, endMinute)}
           </div>
-          <DeleteEvent id={id} />
+          <DeleteEvent id={id} redirect={false}/>
         </CardContent>
         {isOngoing ? <BorderBeam colorFrom="#008236" colorTo="#dcfce7" duration={7} size={60}/> : null}
       </Card>
