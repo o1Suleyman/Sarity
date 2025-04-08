@@ -1,63 +1,64 @@
-import { createServerClient } from "@supabase/ssr";
-import { NextResponse, type NextRequest } from "next/server";
+import { createServerClient, type CookieOptions } from "@supabase/ssr";
+import { NextResponse, type NextRequest, type NextFetchEvent } from "next/server";
+
+class CookieHandler {
+  private request: NextRequest;
+  private dbResponse: NextResponse;
+
+  constructor(request: NextRequest, dbResponse: NextResponse) {
+    this.request = request;
+    this.dbResponse = dbResponse;
+  }
+
+  public getAll() {
+    return this.request.cookies.getAll();
+  }
+
+  public setAll(cookiesToSet: { name: string; value: string; options: CookieOptions }[]) {
+    // Set cookies in the request (not persisted)
+    cookiesToSet.forEach(({ name, value }) => {
+      this.request.cookies.set(name, value);
+    });
+
+    // Create a new response with updated cookies
+    this.dbResponse = NextResponse.next({ request: this.request });
+
+    cookiesToSet.forEach(({ name, value, options }) => {
+      this.dbResponse.cookies.set(name, value, options);
+    });
+  }
+
+  public getResponse() {
+    return this.dbResponse;
+  }
+}
 
 export async function updateSession(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({
-    request,
-  });
+  let dbResponse = NextResponse.next({ request });
+  const cookies = new CookieHandler(request, dbResponse);
 
-  const supabase = createServerClient(
+  const db = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        getAll() {
-          return request.cookies.getAll();
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) =>
-            request.cookies.set(name, value),
-          );
-          supabaseResponse = NextResponse.next({
-            request,
-          });
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options),
-          );
-        },
+        getAll: () => cookies.getAll(),
+        setAll: (cookiesToSet) => cookies.setAll(cookiesToSet),
       },
     },
   );
 
-  // Do not run code between createServerClient and
-  // supabase.auth.getUser(). A simple mistake could make it very hard to debug
-  // issues with users being randomly logged out.
-
-  // IMPORTANT: DO NOT REMOVE auth.getUser()
-
+  // Do not run code between createServerClient and supabase.auth.getUser()
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await db.auth.getUser();
 
   if (!user && !request.nextUrl.pathname.startsWith("/")) {
-    // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone();
     url.pathname = "/";
     return NextResponse.redirect(url);
   }
 
-  // IMPORTANT: You *must* return the supabaseResponse object as it is.
-  // If you're creating a new response object with NextResponse.next() make sure to:
-  // 1. Pass the request in it, like so:
-  //    const myNewResponse = NextResponse.next({ request })
-  // 2. Copy over the cookies, like so:
-  //    myNewResponse.cookies.setAll(supabaseResponse.cookies.getAll())
-  // 3. Change the myNewResponse object to fit your needs, but avoid changing
-  //    the cookies!
-  // 4. Finally:
-  //    return myNewResponse
-  // If this is not done, you may be causing the browser and server to go out
-  // of sync and terminate the user's session prematurely!
-
-  return supabaseResponse;
+  // Return the response with the properly synced cookies
+  return cookies.getResponse();
 }

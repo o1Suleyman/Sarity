@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/drawer";
 import { NoteForm } from "./note-form";
 
-export default function DrawerDialogDemo() {
+export default function CreateNote() {
   const [open, setOpen] = React.useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
@@ -42,26 +42,26 @@ export default function DrawerDialogDemo() {
         </DialogContent>
       </Dialog>
     );
+  } else {
+    return (
+      <Drawer open={open} onOpenChange={setOpen}>
+        <DrawerTrigger asChild>
+          <Button variant="outline">Create note</Button>
+        </DrawerTrigger>
+        <DrawerContent>
+          <DrawerHeader className="text-left">
+            <DrawerTitle>Create note</DrawerTitle>
+          </DrawerHeader>
+          <div className="px-4">
+            <NoteForm />
+          </div>
+          <DrawerFooter className="pt-2">
+            <DrawerClose asChild>
+              <Button variant="outline">Cancel</Button>
+            </DrawerClose>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    );
   }
-
-  return (
-    <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
-        <Button variant="outline">Create note</Button>
-      </DrawerTrigger>
-      <DrawerContent>
-        <DrawerHeader className="text-left">
-          <DrawerTitle>Create note</DrawerTitle>
-        </DrawerHeader>
-        <div className="px-4">
-          <NoteForm />
-        </div>
-        <DrawerFooter className="pt-2">
-          <DrawerClose asChild>
-            <Button variant="outline">Cancel</Button>
-          </DrawerClose>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
-  );
 }

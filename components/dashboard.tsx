@@ -13,13 +13,11 @@ import CreateNote from "./journal/create-note";
 import Link from "next/link";
 import GoalsList from "./goals/goals-list";
 import CreateGoal from "./goals/create-goal";
+import FinancesSection from "./finances/section";
 
 export default function Dashboard() {
   return (
     <div className="flex-1 flex flex-col items-center gap-2 m-2">
-      <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
-        Your day at a glance
-      </h2>
       <ResizablePanelGroup
         direction="horizontal"
         className="max-w-md rounded-lg border md:min-w-[70vw]"
@@ -77,6 +75,7 @@ export default function Dashboard() {
       </h2>
       <GoalsList />
       <CreateGoal />
+      <FinancesSection></FinancesSection>
     </div>
   );
 }
