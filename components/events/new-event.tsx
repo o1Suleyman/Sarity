@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import SubmitButton from "./create-event";
+import { TimeUtils } from "@/lib/utils";
 
 const google = createGoogleGenerativeAI({
   apiKey: process.env.NEXT_PUBLIC_GOOGLE_GENERATIVE_AI_API_KEY,
@@ -28,56 +29,6 @@ const formSchema = z.object({
     message: "Query must be at least 2 characters.",
   }),
 });
-
-function isValidTimeOrder(
-  startHour: string,
-  startMinute: string,
-  endHour: string,
-  endMinute: string,
-) {
-  const startTime = parseInt(startHour) * 60 + parseInt(startMinute);
-  const endTime = parseInt(endHour) * 60 + parseInt(endMinute);
-  return startTime < endTime;
-}
-
-function isOverlapping(
-  newEvent: {
-    start_hour: string;
-    start_minute: string;
-    end_hour: string;
-    end_minute: string;
-  },
-  existingEvents: any[],
-) {
-  if (
-    !isValidTimeOrder(
-      newEvent.start_hour,
-      newEvent.start_minute,
-      newEvent.end_hour,
-      newEvent.end_minute,
-    )
-  ) {
-    return "invalid_time_order";
-  }
-
-  const newStart =
-    parseInt(newEvent.start_hour) * 60 + parseInt(newEvent.start_minute);
-  const newEnd =
-    parseInt(newEvent.end_hour) * 60 + parseInt(newEvent.end_minute);
-
-  return existingEvents.some((event) => {
-    const existingStart =
-      parseInt(event.start_hour) * 60 + parseInt(event.start_minute);
-    const existingEnd =
-      parseInt(event.end_hour) * 60 + parseInt(event.end_minute);
-
-    return (
-      (newStart >= existingStart && newStart < existingEnd) ||
-      (newEnd > existingStart && newEnd <= existingEnd) ||
-      (newStart <= existingStart && newEnd >= existingEnd)
-    );
-  });
-}
 
 export default function NewEvent() {
   const { toast } = useToast();
@@ -103,7 +54,7 @@ export default function NewEvent() {
             endHour: z.string(),
             endMinute: z.string(),
             type: z.enum(["task", "workout"]),
-            isTomorrow: z.boolean().optional(), // Add a flag for "tomorrow"
+            isTomorrow: z.boolean().optional(),
           }),
         }),
         prompt:
@@ -113,14 +64,13 @@ export default function NewEvent() {
 
       const supabase = await createClient();
 
-      // Determine the date based on whether the event is for tomorrow
       const today = new Date();
       const date = object.event.isTomorrow
-        ? new Date(today.setDate(today.getDate() + 1))
-            .toLocaleDateString("en-CA") // Format: YYYY-MM-DD
+        ? new Date(today.setDate(today.getDate() + 1)).toLocaleDateString(
+            "en-CA"
+          )
         : today.toLocaleDateString("en-CA");
 
-      // If this is a workout, check if one already exists for the selected date
       if (object.event.type === "workout") {
         const { data: existingWorkout } = await supabase
           .from("events")
@@ -138,13 +88,11 @@ export default function NewEvent() {
         }
       }
 
-      // Select only events from the selected date
       const { data } = await supabase
         .from("events")
         .select("*")
         .eq("date", date);
 
-      // Check for overlapping events
       const newEvent = {
         start_hour: object.event.startHour,
         start_minute: object.event.startMinute,
@@ -152,7 +100,7 @@ export default function NewEvent() {
         end_minute: object.event.endMinute,
       };
 
-      const overlapCheck = isOverlapping(newEvent, data || []);
+      const overlapCheck = TimeUtils.isOverlapping(newEvent, data || []);
 
       if (overlapCheck === "invalid_time_order") {
         toast({
@@ -169,7 +117,6 @@ export default function NewEvent() {
         return;
       }
 
-      // Insert the new event with the selected date
       const { error } = await supabase.from("events").insert({
         name: object.event.name,
         start_hour: object.event.startHour,
@@ -177,7 +124,7 @@ export default function NewEvent() {
         end_hour: object.event.endHour,
         end_minute: object.event.endMinute,
         type: object.event.type,
-        date: date, // Store as YYYY-MM-DD
+        date: date,
       });
 
       if (error) {
@@ -189,7 +136,7 @@ export default function NewEvent() {
         return;
       }
 
-      form.reset(); // Clear the form after successful submission
+      form.reset();
       router.refresh();
     } catch (error) {
       toast({

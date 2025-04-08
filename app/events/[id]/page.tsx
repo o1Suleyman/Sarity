@@ -23,6 +23,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { VisuallyHidden } from "@/components/ui/visually-hidden";
+import Workouts from "@/components/workouts/workout";
 
 interface EventData {
   id: number;
@@ -46,10 +47,11 @@ export default function Workout({
   const router = useRouter();
   const [eventData, setEventData] = useState<EventData | null>(null);
   const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
-
+  const [eventId, setEventId] = useState<string | null>(null);
   useEffect(() => {
     const fetchEventData = async () => {
       const id = (await params).id;
+      setEventId(id);
       const supabase = createClient();
       const { data } = await supabase
         .from("events")
@@ -160,6 +162,7 @@ export default function Workout({
               <Badge>Duration: {eventData.duration}</Badge>
             </div>
           </CardDescription>
+          <Workouts id={eventId} />
         </CardHeader>
         <CardFooter className="flex justify-end gap-2">
           <Dialog

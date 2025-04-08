@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { z as validator } from "zod";
 
 import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -16,25 +16,25 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { createClient } from "@/utils/supabase/client";
 
-const FormSchema = z.object({
-  content: z.string().nullable(), // Allow content to be null
+const FormSchema = validator.object({
+  content: validator.string().nullable(), // Allow content to be null
 });
 
-type NoteProps = {
+type NoteProps = { // Specify format of a note
   id: string;
   name: string;
-  content: string | null; // Content can be null
+  content: string | null;
 };
 
 export default function Note({ id, name, content }: NoteProps) {
-  const form = useForm<z.infer<typeof FormSchema>>({
+  const form = useForm<validator.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      content: content || "", // Default to an empty string if content is null
+      content: content || "", // Default to an empty string
     },
   });
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
+  async function onSubmit(data: validator.infer<typeof FormSchema>) {
     const supabase = createClient();
 
     const { error } = await supabase.from("notes").upsert(
@@ -88,7 +88,7 @@ export default function Note({ id, name, content }: NoteProps) {
               </FormItem>
             )}
           />
-          <Button type="submit">Submit</Button>
+          <Button type="submit">Save</Button>
         </form>
       </Form>
     </div>
