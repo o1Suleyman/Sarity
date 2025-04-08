@@ -20,7 +20,8 @@ const FormSchema = validator.object({
   content: validator.string().nullable(), // Allow content to be null
 });
 
-type NoteProps = { // Specify format of a note
+type NoteProps = {
+  // Specify format of a note
   id: string;
   name: string;
   content: string | null;

@@ -25,9 +25,9 @@ export default function Dashboard() {
         <ResizablePanel defaultSize={50}>
           <div className="h-full p-2">
             <Link href="/tomorrow">
-            <h4 className="scroll-m-20 text-xl font-semibold tracking-tight m-2">
-              Today's tasks
-            </h4>
+              <h4 className="scroll-m-20 text-xl font-semibold tracking-tight m-2">
+                Today's tasks
+              </h4>
             </Link>
             <Separator />
             <ScrollArea className="h-[50vh] mt-2">

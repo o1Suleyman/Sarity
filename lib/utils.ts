@@ -10,7 +10,7 @@ export class TimeUtils {
     startHour: string,
     startMinute: string,
     endHour: string,
-    endMinute: string
+    endMinute: string,
   ): boolean {
     const startTime = parseInt(startHour) * 60 + parseInt(startMinute);
     const endTime = parseInt(endHour) * 60 + parseInt(endMinute);
@@ -29,33 +29,29 @@ export class TimeUtils {
       start_minute: string;
       end_hour: string;
       end_minute: string;
-    }[]
+    }[],
   ): boolean | "invalid_time_order" {
     if (
       !this.isValidTimeOrder(
         newEvent.start_hour,
         newEvent.start_minute,
         newEvent.end_hour,
-        newEvent.end_minute
+        newEvent.end_minute,
       )
     ) {
       return "invalid_time_order";
     }
 
     const newStart =
-      parseInt(newEvent.start_hour) * 60 +
-      parseInt(newEvent.start_minute);
+      parseInt(newEvent.start_hour) * 60 + parseInt(newEvent.start_minute);
     const newEnd =
-      parseInt(newEvent.end_hour) * 60 +
-      parseInt(newEvent.end_minute);
+      parseInt(newEvent.end_hour) * 60 + parseInt(newEvent.end_minute);
 
     return existingEvents.some((event) => {
       const existingStart =
-        parseInt(event.start_hour) * 60 +
-        parseInt(event.start_minute);
+        parseInt(event.start_hour) * 60 + parseInt(event.start_minute);
       const existingEnd =
-        parseInt(event.end_hour) * 60 +
-        parseInt(event.end_minute);
+        parseInt(event.end_hour) * 60 + parseInt(event.end_minute);
 
       return (
         (newStart >= existingStart && newStart < existingEnd) ||

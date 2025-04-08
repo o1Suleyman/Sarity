@@ -1,5 +1,9 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
-import { NextResponse, type NextRequest, type NextFetchEvent } from "next/server";
+import {
+  NextResponse,
+  type NextRequest,
+  type NextFetchEvent,
+} from "next/server";
 
 class CookieHandler {
   private request: NextRequest;
@@ -14,7 +18,9 @@ class CookieHandler {
     return this.request.cookies.getAll();
   }
 
-  public setAll(cookiesToSet: { name: string; value: string; options: CookieOptions }[]) {
+  public setAll(
+    cookiesToSet: { name: string; value: string; options: CookieOptions }[],
+  ) {
     // Set cookies in the request (not persisted)
     cookiesToSet.forEach(({ name, value }) => {
       this.request.cookies.set(name, value);

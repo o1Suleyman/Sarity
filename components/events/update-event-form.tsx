@@ -168,13 +168,16 @@ export default function UpdateEventForm({
       }
 
       // Upsert the event
-      const { error } = await supabase.from("events").update({
-        name: object.event.name,
-        start_hour: object.event.startHour,
-        start_minute: object.event.startMinute,
-        end_hour: object.event.endHour,
-        end_minute: object.event.endMinute,
-      }).eq("id", eventId);
+      const { error } = await supabase
+        .from("events")
+        .update({
+          name: object.event.name,
+          start_hour: object.event.startHour,
+          start_minute: object.event.startMinute,
+          end_hour: object.event.endHour,
+          end_minute: object.event.endMinute,
+        })
+        .eq("id", eventId);
 
       if (error) {
         toast({

@@ -53,14 +53,17 @@ type Transaction = {
 //
 function FinanceChart({ transactions }: { transactions: Transaction[] }) {
   // Group transactions by date (formatted as YYYY-MM-DD)
-  const grouped = transactions.reduce((acc, t) => {
-    const dateKey = new Date(t.date).toISOString().split("T")[0];
-    if (!acc[dateKey]) {
-      acc[dateKey] = { income: 0, expense: 0 };
-    }
-    acc[dateKey][t.type] += t.amount;
-    return acc;
-  }, {} as Record<string, { income: number; expense: number }>);
+  const grouped = transactions.reduce(
+    (acc, t) => {
+      const dateKey = new Date(t.date).toISOString().split("T")[0];
+      if (!acc[dateKey]) {
+        acc[dateKey] = { income: 0, expense: 0 };
+      }
+      acc[dateKey][t.type] += t.amount;
+      return acc;
+    },
+    {} as Record<string, { income: number; expense: number }>,
+  );
 
   // Sort dates in ascending order
   const sortedDates = Object.keys(grouped).sort();
@@ -178,10 +181,7 @@ export default function FinancesSection() {
         throw new Error(error?.message || "Error inserting transaction.");
       }
       // Update the list with the newly inserted transaction(s)
-      setTransactions((prev) => [
-        ...(insertedData as Transaction[]),
-        ...prev,
-      ]);
+      setTransactions((prev) => [...(insertedData as Transaction[]), ...prev]);
       reset({ description: "", amount: 0, type: selectType });
     } catch (err: any) {
       toast({
@@ -194,10 +194,7 @@ export default function FinancesSection() {
   async function deleteTransaction(id: number) {
     try {
       const db = createClient();
-      const { error } = await db
-        .from("transactions")
-        .delete()
-        .eq("id", id);
+      const { error } = await db.from("transactions").delete().eq("id", id);
       // Optimistically update local transactions list
       setTransactions((prev) => prev.filter((t) => t.id !== id));
       toast({ title: "Transaction deleted" });
@@ -269,15 +266,9 @@ export default function FinancesSection() {
 
       <Separator />
       <div className="flex justify-between text-sm font-medium">
-        <span className="text-green-600">
-          Income: ${income.toFixed(2)}
-        </span>
-        <span className="text-red-600">
-          Expenses: ${expense.toFixed(2)}
-        </span>
-        <span className="text-blue-600">
-          Balance: ${balance.toFixed(2)}
-        </span>
+        <span className="text-green-600">Income: ${income.toFixed(2)}</span>
+        <span className="text-red-600">Expenses: ${expense.toFixed(2)}</span>
+        <span className="text-blue-600">Balance: ${balance.toFixed(2)}</span>
       </div>
 
       {/* Render the FinanceChart if there is any transaction data */}
@@ -288,9 +279,7 @@ export default function FinancesSection() {
             Loading transactions...
           </p>
         ) : transactions.length === 0 ? (
-          <p className="text-muted-foreground text-sm">
-            No transactions yet.
-          </p>
+          <p className="text-muted-foreground text-sm">No transactions yet.</p>
         ) : (
           <ul className="space-y-2">
             {transactions.map((t) => (
@@ -300,19 +289,16 @@ export default function FinancesSection() {
                   "p-2 rounded-md flex justify-between items-center border",
                   t.type === "income"
                     ? "bg-green-100 dark:bg-green-900/30"
-                    : "bg-red-100 dark:bg-red-900/30"
+                    : "bg-red-100 dark:bg-red-900/30",
                 )}
               >
                 <div>
                   <p className="font-medium">{t.description}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {t.date}
-                  </p>
+                  <p className="text-xs text-muted-foreground">{t.date}</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="font-semibold">
-                    {t.type === "income" ? "+" : "-"}$
-                    {t.amount.toFixed(2)}
+                    {t.type === "income" ? "+" : "-"}${t.amount.toFixed(2)}
                   </span>
                   <Button
                     variant="destructive"
@@ -330,7 +316,6 @@ export default function FinancesSection() {
         )}
       </ScrollArea>
       {transactions.length > 0 && <FinanceChart transactions={transactions} />}
-
     </div>
   );
 }

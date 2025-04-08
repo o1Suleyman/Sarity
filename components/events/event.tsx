@@ -83,7 +83,10 @@ export default function Event({
       className="relative"
     >
       <Card className="w-full overflow-x-hidden">
-        <CardHeader className="cursor-pointer" onClick={() => router.push(`/events/${id}`)}>
+        <CardHeader
+          className="cursor-pointer"
+          onClick={() => router.push(`/events/${id}`)}
+        >
           <CardTitle className="flex items-center gap-2">
             {name}
             {isOngoing && (
@@ -95,9 +98,16 @@ export default function Event({
           <div>
             {formatTimeRange(startHour, startMinute, endHour, endMinute)}
           </div>
-          <DeleteEvent id={id} redirect={false}/>
+          <DeleteEvent id={id} redirect={false} />
         </CardContent>
-        {isOngoing ? <BorderBeam colorFrom="#008236" colorTo="#dcfce7" duration={7} size={60}/> : null}
+        {isOngoing ? (
+          <BorderBeam
+            colorFrom="#008236"
+            colorTo="#dcfce7"
+            duration={7}
+            size={60}
+          />
+        ) : null}
       </Card>
     </motion.div>
   );

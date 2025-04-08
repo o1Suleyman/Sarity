@@ -67,7 +67,7 @@ export default function NewEvent() {
       const today = new Date();
       const date = object.event.isTomorrow
         ? new Date(today.setDate(today.getDate() + 1)).toLocaleDateString(
-            "en-CA"
+            "en-CA",
           )
         : today.toLocaleDateString("en-CA");
 
