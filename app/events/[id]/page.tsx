@@ -162,8 +162,7 @@ export default function Workout({
               <Badge>Duration: {eventData.duration}</Badge>
             </div>
           </CardDescription>
-          {eventData.type === "workout" && (<Workouts id={eventId} />)}
-
+          {eventData.type === "workout" && <Workouts id={eventId} />}
         </CardHeader>
         <CardFooter className="flex justify-end gap-2">
           <Dialog

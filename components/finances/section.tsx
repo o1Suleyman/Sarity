@@ -116,47 +116,57 @@ export default function FinancesSection() {
   const { toast } = useToast();
 
   // Queue to hold pending database operations.
-  const [operationQueue, setOperationQueue] = useState<TransactionOperation[]>([]);
+  const [operationQueue, setOperationQueue] = useState<TransactionOperation[]>(
+    [],
+  );
   const isProcessingQueue = useRef(false);
-  
-  // Ref to track pending deletion timeouts for undo functionality.
-  const pendingDeletionRef = useRef<{ [id: number]: ReturnType<typeof setTimeout> }>({});
-// Process operations one at a time.
-const processQueue = async () => {
-  if (operationQueue.length === 0) return;
-  const op = operationQueue[0];
-  const db = createClient();
 
-  try {
-    if (op.type === "add") {
-      const { data: insertedData, error } = await db
-        .from("transactions")
-        .insert(op.transaction)
-        .select();
-      if (error || !insertedData) {
-        throw new Error(error?.message || "Error inserting transaction.");
+  // Ref to track pending deletion timeouts for undo functionality.
+  const pendingDeletionRef = useRef<{
+    [id: number]: ReturnType<typeof setTimeout>;
+  }>({});
+  // Process operations one at a time.
+  const processQueue = async () => {
+    if (operationQueue.length === 0) return;
+    const op = operationQueue[0];
+    const db = createClient();
+
+    try {
+      if (op.type === "add") {
+        const { data: insertedData, error } = await db
+          .from("transactions")
+          .insert(op.transaction)
+          .select();
+        if (error || !insertedData) {
+          throw new Error(error?.message || "Error inserting transaction.");
+        }
+        setTransactions((prev) => [
+          ...(insertedData as Transaction[]),
+          ...prev,
+        ]);
+        reset({ description: "", amount: 0, type: selectType });
+      } else if (op.type === "delete") {
+        const { error } = await db
+          .from("transactions")
+          .delete()
+          .eq("id", op.id);
+        if (error) throw new Error(error.message);
+        // The UI was already updated upon deletion.
+        toast({ title: "Transaction deleted" });
       }
-      setTransactions((prev) => [...(insertedData as Transaction[]), ...prev]);
-      reset({ description: "", amount: 0, type: selectType });
-    } else if (op.type === "delete") {
-      const { error } = await db
-        .from("transactions")
-        .delete()
-        .eq("id", op.id);
-      if (error) throw new Error(error.message);
-      // The UI was already updated upon deletion.
-      toast({ title: "Transaction deleted" });
+    } catch (err: any) {
+      toast({
+        title:
+          op.type === "add"
+            ? "Error adding transaction"
+            : "Error deleting transaction",
+        description: err.message,
+        variant: "destructive",
+      });
+    } finally {
+      setOperationQueue((q) => q.slice(1));
     }
-  } catch (err: any) {
-    toast({
-      title: op.type === "add" ? "Error adding transaction" : "Error deleting transaction",
-      description: err.message,
-      variant: "destructive",
-    });
-  } finally {
-    setOperationQueue((q) => q.slice(1));
-  }
-};
+  };
   // Initialize react-hook-form with zod schema
   const form = useForm<z.infer<typeof financeSchema>>({
     resolver: zodResolver(financeSchema),
@@ -196,8 +206,6 @@ const processQueue = async () => {
     fetchTransactions();
   }, []);
 
-  
-
   useEffect(() => {
     const processQueueIfNeeded = async () => {
       if (operationQueue.length > 0 && !isProcessingQueue.current) {
@@ -216,7 +224,10 @@ const processQueue = async () => {
       date: new Date().toLocaleString(),
     };
     // Enqueue the add operation.
-    setOperationQueue((q) => [...q, { type: "add", transaction: newTransaction }]);
+    setOperationQueue((q) => [
+      ...q,
+      { type: "add", transaction: newTransaction },
+    ]);
   }
 
   // Handle deletion with undo support.

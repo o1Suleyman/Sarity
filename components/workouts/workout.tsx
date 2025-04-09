@@ -173,8 +173,7 @@ export default function Workout({ id }: { id: string | null }) {
           sets.map((set) => {
             const exercise = new Exercise(set.name);
             const isDeleting = deletingSetIds.includes(set.id);
-            const imageUrl =
-              exerciseImages[set.name as ExerciseName]
+            const imageUrl = exerciseImages[set.name as ExerciseName];
 
             return (
               <Card key={set.id}>
@@ -183,7 +182,13 @@ export default function Workout({ id }: { id: string | null }) {
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <div className="bg-white border border-gray-200 shadow-md rounded p-2">
-                    <Image src={imageUrl} alt={exercise.displayName} className="w-full h-40 object-contain" height={160} width={160}/>
+                    <Image
+                      src={imageUrl}
+                      alt={exercise.displayName}
+                      className="w-full h-40 object-contain"
+                      height={160}
+                      width={160}
+                    />
                     {/* <img
                       src={imageUrl}
                       alt={exercise.displayName}
