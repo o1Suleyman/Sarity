@@ -29,6 +29,7 @@ import {
   SelectContent,
   SelectItem,
 } from "../ui/select";
+import Image from "next/image";
 
 enum ExerciseName {
   Bench = "bench",
@@ -173,8 +174,7 @@ export default function Workout({ id }: { id: string | null }) {
             const exercise = new Exercise(set.name);
             const isDeleting = deletingSetIds.includes(set.id);
             const imageUrl =
-              exerciseImages[set.name as ExerciseName] ||
-              "/exercises/default.jpg";
+              exerciseImages[set.name as ExerciseName]
 
             return (
               <Card key={set.id}>
@@ -183,12 +183,13 @@ export default function Workout({ id }: { id: string | null }) {
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <div className="bg-white border border-gray-200 shadow-md rounded p-2">
-                    <img
+                    <Image src={imageUrl} alt={exercise.displayName} className="w-full h-40 object-contain" height={160} width={160}/>
+                    {/* <img
                       src={imageUrl}
                       alt={exercise.displayName}
                       className="w-full h-40 object-contain"
                       loading="lazy"
-                    />
+                    /> */}
                   </div>
                   <p>{set.minutes} minutes</p>
                 </CardContent>

@@ -26,7 +26,7 @@ export default function Dashboard() {
           <div className="h-full p-2">
             <Link href="/tomorrow">
               <h4 className="scroll-m-20 text-xl font-semibold tracking-tight m-2">
-                Today's tasks
+                <u>Today's tasks</u>
               </h4>
             </Link>
             <Separator />

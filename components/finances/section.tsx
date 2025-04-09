@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -20,7 +20,6 @@ import { createClient } from "@/utils/supabase/client";
 import { useToast } from "@/components/hooks/use-toast";
 import { Trash2 } from "lucide-react";
 import * as RechartsPrimitive from "recharts";
-// Import the chart container components from your shadcn charts library.
 import {
   ChartContainer,
   ChartTooltipContent,
@@ -35,8 +34,7 @@ const financeSchema = z.object({
 });
 
 // Transaction type that matches your database schema.
-// Ensure your Supabase table "transactions" has a primary key column "id".
-type Transaction = {
+export type Transaction = {
   id?: number;
   description: string;
   amount: number;
@@ -44,13 +42,12 @@ type Transaction = {
   date: string;
 };
 
-//
-// FinanceChart Component
-//
-// This component aggregates your transactions by day (formatted as YYYY-MM-DD)
-// and displays a line chart using the shadcn chart primitives and Recharts.
-// Two series are displayed: one for income and one for expense.
-//
+// Define a type for operations we want to queue.
+// For deletes, we now include the transaction details for undo support.
+type TransactionOperation =
+  | { type: "add"; transaction: Transaction }
+  | { type: "delete"; id: number; transaction: Transaction };
+
 function FinanceChart({ transactions }: { transactions: Transaction[] }) {
   // Group transactions by date (formatted as YYYY-MM-DD)
   const grouped = transactions.reduce(
@@ -64,19 +61,13 @@ function FinanceChart({ transactions }: { transactions: Transaction[] }) {
     },
     {} as Record<string, { income: number; expense: number }>,
   );
-
-  // Sort dates in ascending order
   const sortedDates = Object.keys(grouped).sort();
-
-  // Prepare data as an array of objects: { date, income, expense }
   const data = sortedDates.map((date) => ({
     date,
     income: grouped[date].income,
     expense: grouped[date].expense,
   }));
 
-  // Configure the chart colors and labels.
-  // The values provided here are used to set CSS variables (i.e. --color-income / --color-expense)
   const chartConfig = {
     income: { label: "Income", color: "green" },
     expense: { label: "Expense", color: "red" },
@@ -124,6 +115,48 @@ export default function FinancesSection() {
   const [selectType, setSelectType] = useState<"income" | "expense">("expense");
   const { toast } = useToast();
 
+  // Queue to hold pending database operations.
+  const [operationQueue, setOperationQueue] = useState<TransactionOperation[]>([]);
+  const isProcessingQueue = useRef(false);
+  
+  // Ref to track pending deletion timeouts for undo functionality.
+  const pendingDeletionRef = useRef<{ [id: number]: ReturnType<typeof setTimeout> }>({});
+// Process operations one at a time.
+const processQueue = async () => {
+  if (operationQueue.length === 0) return;
+  const op = operationQueue[0];
+  const db = createClient();
+
+  try {
+    if (op.type === "add") {
+      const { data: insertedData, error } = await db
+        .from("transactions")
+        .insert(op.transaction)
+        .select();
+      if (error || !insertedData) {
+        throw new Error(error?.message || "Error inserting transaction.");
+      }
+      setTransactions((prev) => [...(insertedData as Transaction[]), ...prev]);
+      reset({ description: "", amount: 0, type: selectType });
+    } else if (op.type === "delete") {
+      const { error } = await db
+        .from("transactions")
+        .delete()
+        .eq("id", op.id);
+      if (error) throw new Error(error.message);
+      // The UI was already updated upon deletion.
+      toast({ title: "Transaction deleted" });
+    }
+  } catch (err: any) {
+    toast({
+      title: op.type === "add" ? "Error adding transaction" : "Error deleting transaction",
+      description: err.message,
+      variant: "destructive",
+    });
+  } finally {
+    setOperationQueue((q) => q.slice(1));
+  }
+};
   // Initialize react-hook-form with zod schema
   const form = useForm<z.infer<typeof financeSchema>>({
     resolver: zodResolver(financeSchema),
@@ -133,10 +166,9 @@ export default function FinancesSection() {
       type: "expense",
     },
   });
-
   const { handleSubmit, register, reset, setValue, formState } = form;
 
-  // Function to load transactions from the database
+  // Load transactions from the database.
   async function fetchTransactions() {
     setLoading(true);
     try {
@@ -160,54 +192,81 @@ export default function FinancesSection() {
     }
   }
 
-  // Load the transactions when the component mounts
   useEffect(() => {
     fetchTransactions();
   }, []);
 
-  // Function to handle adding a new transaction
-  async function onSubmit(data: z.infer<typeof financeSchema>) {
-    try {
-      const db = createClient();
-      const newTransaction: Transaction = {
-        ...data,
-        date: new Date().toLocaleString(),
-      };
-      const { error, data: insertedData } = await db
-        .from("transactions")
-        .insert(newTransaction)
-        .select(); // Return inserted rows for immediate update
-      if (error || !insertedData) {
-        throw new Error(error?.message || "Error inserting transaction.");
+  
+
+  useEffect(() => {
+    const processQueueIfNeeded = async () => {
+      if (operationQueue.length > 0 && !isProcessingQueue.current) {
+        isProcessingQueue.current = true;
+        await processQueue();
+        isProcessingQueue.current = false;
       }
-      // Update the list with the newly inserted transaction(s)
-      setTransactions((prev) => [...(insertedData as Transaction[]), ...prev]);
-      reset({ description: "", amount: 0, type: selectType });
-    } catch (err: any) {
-      toast({
-        title: "Error adding transaction",
-        description: err.message,
-        variant: "destructive",
-      });
-    }
+    };
+    processQueueIfNeeded();
+  }, [operationQueue]);
+
+  // Handle form submission to add a transaction.
+  async function onSubmit(data: z.infer<typeof financeSchema>) {
+    const newTransaction: Transaction = {
+      ...data,
+      date: new Date().toLocaleString(),
+    };
+    // Enqueue the add operation.
+    setOperationQueue((q) => [...q, { type: "add", transaction: newTransaction }]);
   }
-  async function deleteTransaction(id: number) {
-    try {
-      const db = createClient();
-      const { error } = await db.from("transactions").delete().eq("id", id);
-      // Optimistically update local transactions list
-      setTransactions((prev) => prev.filter((t) => t.id !== id));
-      toast({ title: "Transaction deleted" });
-    } catch (err: any) {
+
+  // Handle deletion with undo support.
+  function deleteTransaction(id: number) {
+    const transactionToDelete = transactions.find((t) => t.id === id);
+    if (!transactionToDelete) return;
+    // Optimistically remove the transaction from state.
+    setTransactions((prev) => prev.filter((t) => t.id !== id));
+
+    // Show a toast with an Undo button.
+    toast({
+      title: "Transaction deleted",
+      description: "You can undo this action.",
+      action: (
+        <Button
+          variant="link"
+          onClick={() => handleUndoDelete(id, transactionToDelete)}
+        >
+          Undo
+        </Button>
+      ),
+    });
+
+    // Set a timeout before enqueuing the delete operation.
+    const timeoutId = setTimeout(() => {
+      setOperationQueue((q) => [
+        ...q,
+        { type: "delete", id, transaction: transactionToDelete },
+      ]);
+      delete pendingDeletionRef.current[id];
+    }, 5000); // 5-second delay before finalizing deletion
+
+    pendingDeletionRef.current[id] = timeoutId;
+  }
+
+  // Undo deletion: cancel the timeout and restore the transaction.
+  function handleUndoDelete(id: number, transaction: Transaction) {
+    const pendingTimeout = pendingDeletionRef.current[id];
+    if (pendingTimeout) {
+      clearTimeout(pendingTimeout);
+      delete pendingDeletionRef.current[id];
+      setTransactions((prev) => [transaction, ...prev]);
       toast({
-        title: "Error deleting transaction",
-        description: err.message,
-        variant: "destructive",
+        title: "Undo successful",
+        description: "Transaction has been restored.",
       });
     }
   }
 
-  // Calculate totals
+  // Calculate totals.
   const income = transactions
     .filter((t) => t.type === "income")
     .reduce((sum, t) => sum + t.amount, 0);
@@ -270,8 +329,6 @@ export default function FinancesSection() {
         <span className="text-red-600">Expenses: ${expense.toFixed(2)}</span>
         <span className="text-blue-600">Balance: ${balance.toFixed(2)}</span>
       </div>
-
-      {/* Render the FinanceChart if there is any transaction data */}
 
       <ScrollArea className="h-64 border rounded-md p-2">
         {loading ? (
