@@ -1,6 +1,6 @@
 import Image from "next/image";
-import light from "../public/light.svg";
-import dark from "../public/dark.svg";
+import light from "../public/daylylight.svg";
+import dark from "../public/daylydark.png";
 
 export default function Logo() {
   return (

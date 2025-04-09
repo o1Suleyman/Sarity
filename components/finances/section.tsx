@@ -116,21 +116,14 @@ export default function FinancesSection() {
   const { toast } = useToast();
 
   // Queue to hold pending database operations.
-  const [operationQueue, setOperationQueue] = useState<TransactionOperation[]>(
-    [],
-  );
+  const [operationQueue, setOperationQueue] = useState<TransactionOperation[]>([]);
   const isProcessingQueue = useRef(false);
-
   // Ref to track pending deletion timeouts for undo functionality.
-  const pendingDeletionRef = useRef<{
-    [id: number]: ReturnType<typeof setTimeout>;
-  }>({});
-  // Process operations one at a time.
+  const pendingDeletionRef = useRef<{[id: number]: ReturnType<typeof setTimeout>;}>({});
   const processQueue = async () => {
     if (operationQueue.length === 0) return;
     const op = operationQueue[0];
     const db = createClient();
-
     try {
       if (op.type === "add") {
         const { data: insertedData, error } = await db
@@ -151,7 +144,6 @@ export default function FinancesSection() {
           .delete()
           .eq("id", op.id);
         if (error) throw new Error(error.message);
-        // The UI was already updated upon deletion.
         toast({ title: "Transaction deleted" });
       }
     } catch (err: any) {
@@ -258,7 +250,7 @@ export default function FinancesSection() {
         { type: "delete", id, transaction: transactionToDelete },
       ]);
       delete pendingDeletionRef.current[id];
-    }, 5000); // 5-second delay before finalizing deletion
+    }, 5000);
 
     pendingDeletionRef.current[id] = timeoutId;
   }

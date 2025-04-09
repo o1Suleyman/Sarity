@@ -39,7 +39,7 @@ export default function Home() {
             All you need is&nbsp;
           </span>
           <SparklesText
-            text="Sarity"
+            text="Dayly"
             sparklesCount={5}
             className="text-3xl font-bold text-black dark:text-white"
           />
