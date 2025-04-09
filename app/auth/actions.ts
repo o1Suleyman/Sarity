@@ -18,7 +18,7 @@ export async function auth(formData: FormData) {
       emailRedirectTo: "http://localhost:3000",
     },
   });
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  await new Promise((resolve) => setTimeout(resolve, 3000));
 
   revalidatePath("/", "layout");
   permanentRedirect(`https://${domain}`);

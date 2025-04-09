@@ -58,7 +58,7 @@ export default function NewEvent() {
           }),
         }),
         prompt:
-          "Capitalize the name unless otherwise stated, if the user doesn't specify am or pm guess which one based on the context, use military time, for example if it's 8am return 08 and if its 7pm return 19, fix the user's spelling mistakes, if the user doesn't specify, assume a task lasts one hour, impersonalize the verbs (for example walk my dog turns into walk dog), if the user mentions tomorrow, set isTomorrow to true, anyway here's the event:" +
+          "You should capitalize the event name the way that the user does, if the user doesn't specify am or pm guess which one based on the context, use military time, for example if it's 8am return 08 and if its 7pm return 19, fix the user's spelling mistakes, if the user doesn't specify, assume the event ends one hour after it starts, impersonalize the verbs (for example walk my dog turns into walk dog), if the user mentions tomorrow, set isTomorrow to true, anyway here's the event:" +
           values.query,
       });
 
@@ -164,7 +164,7 @@ export default function NewEvent() {
                 <Input
                   {...field}
                   autoComplete="off"
-                  placeholder="Walk my dog after school"
+                  placeholder="Finish my homework after school"
                   autoFocus
                 />
               </FormControl>

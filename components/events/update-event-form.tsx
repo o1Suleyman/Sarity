@@ -119,7 +119,7 @@ export default function UpdateEventForm({
           }),
         }),
         prompt:
-          "Use military time, for example if it's 8am return 08 and if its 7pm return 19, if the user doesn't specify am or pm guess which one based on the context, auto-capitalize the name, if the user doesn't specify then assume that the task lasts one hour, here's the event:" +
+          "Use military time, for example if it's 8am return 08 and if its 7pm return 19, if the user doesn't specify am or pm guess which one based on the context, copy the capitalization of the user, if the user doesn't specify when a task ends then assume that the event ends one hour after it starts, here's the event:" +
           values.query,
       });
 
