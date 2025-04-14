@@ -1,1 +1,2 @@
-Get started at sarity.vercel.app
+To compile and run:
+`npm run dev`
